@@ -207,6 +207,7 @@ const TeacherView = () => {
         </SearchContainer>
         
         {jobs.map((job)=>(
+          <Link to={`/findjobs/${job._id}`}>
           <ViewPostContainer>
           <Text>
             {job.title}
@@ -225,7 +226,7 @@ const TeacherView = () => {
         </Row>
         <Button>See More</Button>
         </ViewPostContainer>
-
+       </Link>
         ))}
         
 

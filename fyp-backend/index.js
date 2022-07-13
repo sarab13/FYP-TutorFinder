@@ -179,7 +179,7 @@ app.post('/myposts/:id',async(req,res)=>{
     res.json({message:"success",myPosts})
     }
     catch(e){
-    res.jsonp({error:true,message:"Something went wrong, try again."})
+    res.json({error:true,message:"Something went wrong, try again."})
     }
 })
 const auth=(req,res,next)=>{
@@ -211,6 +211,17 @@ app.post('/latest_posts',async(req,res)=>{
 
 
 
+})
+app.post('/getjob',async(req,res)=>{
+    const id=req.body.id;
+    try{
+      const jobPost=await JobPost.findOne({_id:id})
+      res.json({message:"success",job:jobPost})
+    }
+    catch(e){
+        res.json({error:true,message:"Something went wrong, try again."})
+
+    }
 })
 app.listen(5000,()=>{
     console.log("server running successfully.")

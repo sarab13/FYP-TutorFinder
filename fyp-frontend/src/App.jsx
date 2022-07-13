@@ -10,6 +10,7 @@ import Role from './pages/Role';
 import TeacherProfileForm from './components/TeacherProfileForm';
 import TeacherProfilePage from './components/TeacherProfilePage';
 import TeacherView from './components/TeacherView';
+import SinglePost from './components/SinglePost';
 const App = () => {
   
   return <Routes>
@@ -21,6 +22,7 @@ const App = () => {
   <Route exact path='/updateprofile' element={<TeacherProfileForm/>}></Route>
   <Route exact path='/myprofile' element={<TeacherProfilePage/>}/>
   <Route exact path='/findjobs' element={<TeacherView/>}/>
+  <Route exact path='/findjobs/:id' element={<SinglePost/>}/>
 </Routes>
 
 
