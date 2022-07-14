@@ -112,6 +112,15 @@ padding: 20px;
   margin-top: 20px;
 
 `
+const LinkTag=styled(Link)`
+
+width: 40%;
+
+padding: 20px;
+  margin-left: 20px;
+  background-color: lightsalmon;
+
+`
 const Tags=styled.div`
 width: 15%;
 height: 20px;
@@ -170,7 +179,8 @@ export const StudentPosts = () => {
         </Container>
         <BottomContainer>
         <Text>My Posts</Text>
-       {posts.map((Post)=>(<ViewPostContainer>
+       {posts.map((Post)=>(
+       <LinkTag to={`/myposts/${Post._id}`}><ViewPostContainer>
  <Text>{Post.title}</Text>
  {Post.subjects.map((Subject)=>(<Tags>{Subject.name}</Tags>))}
  
@@ -180,7 +190,7 @@ export const StudentPosts = () => {
  <Text> <GoCalendar/> {moment(Post.deadline).fromNow()}</Text>
  
  </Row>
- </ViewPostContainer>
+ </ViewPostContainer></LinkTag>
 
        ))}
        

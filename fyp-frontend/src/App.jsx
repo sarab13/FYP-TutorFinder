@@ -1,6 +1,6 @@
 
 import React from 'react'
-
+import './App.css'
 import Register from "./pages/Register";
 import Login from "./pages/Login.jsx";
 import {Routes,Route,Navigate} from 'react-router-dom'
@@ -12,6 +12,7 @@ import TeacherProfileForm from './components/TeacherProfileForm';
 import TeacherProfilePage from './components/TeacherProfilePage';
 import TeacherView from './components/TeacherView';
 import SinglePost from './components/SinglePost';
+import MyPost from './components/MyPost';
 const App = () => {
   
   return <Routes>
@@ -24,6 +25,7 @@ const App = () => {
   <Route exact path='/myprofile' element={<TeacherProfilePage/>}/>
   <Route exact path='/findjobs' element={<TeacherView/>}/>
   <Route exact path='/findjobs/:id' element={<SinglePost/>}/>
+  <Route exact path='/myposts/:id' element={<MyPost/>}/>
 </Routes>
 
 

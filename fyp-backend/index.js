@@ -243,6 +243,32 @@ app.post('/bidonjob',async(req,res)=>{
 
  }
 })
+
+app.post('/proposalslist',async(req,res)=>{
+    const jobId=req.body.jobId;
+    console.log(jobId)
+    try{
+        const bidsList=[]
+        let item={}
+        const bids=await Bid.find({jobId})
+        for(let i=0;i<bids.length;i++){
+            item.tutorId=bids[i].tutorId;
+            item.price=bids[i].price;
+            item.message=bids[i].message;
+            const profile=await Profile.findOne({tutorId:bids[i].tutorId})
+            item.name=profile.name;
+            item.profileId=profile._id
+            bidsList.push(item)
+        }
+        console.log(bidsList)
+        res.json({message:"success",bidsList})
+
+    }
+    catch(e){
+        res.json({error:true,message:"Something went wrong, try again."})
+
+    }
+})
 app.listen(5000,()=>{
     console.log("server running successfully.")
 })
