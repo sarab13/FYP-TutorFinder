@@ -115,6 +115,17 @@ padding: 20px;
   background-color: lightsalmon;
 
 `
+const LinkTag=styled(Link)`
+
+width: 40%;
+
+padding: 20px;
+  margin-left: 20px;
+  background-color: lightsalmon;
+
+`
+
+
 const Tags=styled.div`
 width: 15%;
 height: 20px;
@@ -207,7 +218,7 @@ const TeacherView = () => {
         </SearchContainer>
         
         {jobs.map((job)=>(
-          <Link to={`/findjobs/${job._id}`}>
+          <LinkTag to={`/findjobs/${job._id}`}>
           <ViewPostContainer>
           <Text>
             {job.title}
@@ -226,7 +237,7 @@ const TeacherView = () => {
         </Row>
         <Button>See More</Button>
         </ViewPostContainer>
-       </Link>
+       </LinkTag>
         ))}
         
 

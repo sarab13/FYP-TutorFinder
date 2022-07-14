@@ -4,6 +4,7 @@ const mongoose=require('mongoose')
 const User=require('./models/User')
 const Profile=require('./models/TeacherProfile')
 const JobPost=require('./models/JobPost')
+const Bid=require('./models/Bid')
 const bcrypt=require('bcrypt')
 const jwt=require('jsonwebtoken')
 const cors=require('cors')
@@ -222,6 +223,25 @@ app.post('/getjob',async(req,res)=>{
         res.json({error:true,message:"Something went wrong, try again."})
 
     }
+})
+
+app.post('/bidonjob',async(req,res)=>{
+ const bidDetails=req.body;
+ try{
+    const newBid=new Bid({
+        price:bidDetails.price,
+        message:bidDetails.message,
+        tutorId:bidDetails.tutorId,
+        jobId:bidDetails.jobId
+    })
+    await newBid.save()
+    res.json({message:"success",Bid:newBid})
+
+ }
+ catch(e){
+    res.json({error:true,message:"Something went wrong, try again."})
+
+ }
 })
 app.listen(5000,()=>{
     console.log("server running successfully.")
