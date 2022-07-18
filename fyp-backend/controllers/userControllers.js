@@ -6,10 +6,11 @@ const User = require("../models/User");
 //@route           GET /api/user?search=
 //@access          Public
 const allUsers = asyncHandler(async (req, res) => {
+  
   const keyword = req.query.search
     ? {
         $or: [
-          { name: { $regex: req.query.search, $options: "i" } },
+          { username: { $regex: req.query.search, $options: "i" } },
           { email: { $regex: req.query.search, $options: "i" } },
         ],
       }

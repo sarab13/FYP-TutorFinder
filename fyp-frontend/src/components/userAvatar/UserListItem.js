@@ -16,7 +16,7 @@ const UserListItem = ({ handleFunction }) => {
         color: "white",
       }}
       w="100%"
-      d="flex"
+      display="flex"
       alignItems="center"
       color="black"
       px={3}

@@ -33,8 +33,10 @@ import { Effect } from "react-notification-badge";
 import { getSender } from "../../config/ChatLogics";
 import UserListItem from "../userAvatar/UserListItem";
 import { ChatContext } from "../../Context/ChatProvider";
-
-function SideDrawer() {
+import { useEffect } from 'react';
+import {useLocation} from 'react-router-dom'
+function SideDrawer({tutorId}) {
+  let location=useLocation()
   const [search, setSearch] = useState("");
   const [searchResult, setSearchResult] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -66,6 +68,11 @@ function SideDrawer() {
     history.navigate("/");
   };
 
+  useEffect(()=>{
+  if(location.state!=null)
+    accessChat(location.state)
+   
+  },[])
   const handleSearch = async () => {
     if (!search) {
       toast({
@@ -81,13 +88,9 @@ function SideDrawer() {
     try {
       setLoading(true);
 
-      const config = {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
-      };
-
-      const { data } = await axios.get(`/api/user?search=${search}`, config);
+    
+      const body={userId:user}
+      const { data } = await axios.get(`/api/user?search=${search}`,body);
 
       setLoading(false);
       setSearchResult(data);
@@ -130,7 +133,8 @@ function SideDrawer() {
   return (
     <>
       <Box
-        d="flex"
+        display="flex"
+        flexDirection="row"
         justifyContent="space-between"
         alignItems="center"
         bg="white"
@@ -147,7 +151,7 @@ function SideDrawer() {
           </Button>
         </Tooltip>
         <Text fontSize="2xl" fontFamily="Work sans">
-          Talk-A-Tive
+          Messages
         </Text>
         <div>
           <Menu>
@@ -220,7 +224,7 @@ function SideDrawer() {
                 />
               ))
             )}
-            {loadingChat && <Spinner ml="auto" d="flex" />}
+            {loadingChat && <Spinner ml="auto" display="flex" />}
           </DrawerBody>
         </DrawerContent>
       </Drawer>

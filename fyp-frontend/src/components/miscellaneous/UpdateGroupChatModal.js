@@ -42,12 +42,7 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
 
     try {
       setLoading(true);
-      const config = {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
-      };
-      const { data } = await axios.get(`/api/user?search=${search}`, config);
+      const { data } = await axios.get(`/api/user?search=${search}`);
       console.log(data);
       setLoading(false);
       setSearchResult(data);
@@ -69,22 +64,17 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
 
     try {
       setRenameLoading(true);
-      const config = {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
-      };
+      
       const { data } = await axios.put(
         `/api/chat/rename`,
         {
           chatId: selectedChat._id,
           chatName: groupChatName,
-        },
-        config
+        }
       );
 
-      console.log(data._id);
-      // setSelectedChat("");
+     
+
       setSelectedChat(data);
       setFetchAgain(!fetchAgain);
       setRenameLoading(false);
@@ -127,18 +117,13 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
 
     try {
       setLoading(true);
-      const config = {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
-      };
+      
       const { data } = await axios.put(
         `/api/chat/groupadd`,
         {
           chatId: selectedChat._id,
           userId: user1._id,
-        },
-        config
+        }
       );
 
       setSelectedChat(data);
@@ -172,18 +157,13 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
 
     try {
       setLoading(true);
-      const config = {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
-      };
+      
       const { data } = await axios.put(
         `/api/chat/groupremove`,
         {
           chatId: selectedChat._id,
           userId: user1._id,
-        },
-        config
+        }
       );
 
       user1._id === user._id ? setSelectedChat() : setSelectedChat(data);
@@ -206,7 +186,7 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
 
   return (
     <>
-      <IconButton d={{ base: "flex" }} icon={<ViewIcon />} onClick={onOpen} />
+      <IconButton display={{ base: "flex" }} icon={<ViewIcon />} onClick={onOpen} />
 
       <Modal onClose={onClose} isOpen={isOpen} isCentered>
         <ModalOverlay />
@@ -214,15 +194,15 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
           <ModalHeader
             fontSize="35px"
             fontFamily="Work sans"
-            d="flex"
+            display="flex"
             justifyContent="center"
           >
             {selectedChat.chatName}
           </ModalHeader>
 
           <ModalCloseButton />
-          <ModalBody d="flex" flexDir="column" alignItems="center">
-            <Box w="100%" d="flex" flexWrap="wrap" pb={3}>
+          <ModalBody display="flex" flexDir="column" alignItems="center">
+            <Box w="100%" display="flex" flexWrap="wrap" pb={3}>
               {selectedChat.users.map((u) => (
                 <UserBadgeItem
                   key={u._id}
@@ -232,7 +212,7 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
                 />
               ))}
             </Box>
-            <FormControl d="flex">
+            <FormControl display="flex">
               <Input
                 placeholder="Chat Name"
                 mb={3}

@@ -4,6 +4,7 @@ import styled from "styled-components"
 
 import { useParams,Link } from 'react-router-dom'
 import { useEffect } from 'react'
+import SideDrawer from './miscellaneous/SideDrawer'
 const Container=styled.div`
 height: 80px;
 background-color: lightgrey;
@@ -71,10 +72,14 @@ export default function MyPost() {
         if(response.data.message=='success'){
             setProposalsList(response.data.bidsList)
         }
+    
     }
     useEffect(()=>{
        getProposalsList()
     },[])
+
+
+   
   return (
     <div>
      <Container>
@@ -113,7 +118,8 @@ export default function MyPost() {
             <div className='footer'>
                   <p>{proposal.message}</p>
             </div>
-            <button>Message Now</button>
+            <p>{proposal.tutorId}</p>
+            <Link to='/chat' state={proposal.tutorId}>Message Now</Link>
             </div>
            )}
            
