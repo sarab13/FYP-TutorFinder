@@ -40,6 +40,7 @@ cursor:pointer;`
 
 export default function MyPost() {
     const {id}=useParams()
+    alert(id)
     const [proposalslist,setProposalsList]=useState(undefined)
     const [post,setPost]=useState({
         title:'',

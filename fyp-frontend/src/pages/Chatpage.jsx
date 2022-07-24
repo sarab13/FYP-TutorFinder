@@ -11,7 +11,7 @@ const Chatpage = () => {
   let location=useLocation()
   const {user,setUser}=React.useContext(ChatContext)
   const [fetchAgain, setFetchAgain] = useState(false);
-  console.log(location)
+  
   
   
   return (

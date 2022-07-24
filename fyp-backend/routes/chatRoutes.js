@@ -12,7 +12,7 @@ const {
 const router = express.Router();
 
 router.route("/").post(accessChat);
-router.route("/").get(fetchChats);
+router.route("/allchats").post(fetchChats);
 router.route("/group").post(createGroupChat);
 router.route("/rename").put(renameGroup);
 router.route("/groupremove").put(removeFromGroup);

@@ -15,11 +15,13 @@ import SinglePost from './components/SinglePost';
 import MyPost from './components/MyPost';
 import Chatpage from './pages/Chatpage';
 import { ChatContext } from './Context/ChatProvider';
+import { useSelector } from 'react-redux';
 const App = () => {
+  const currentUser=useSelector((state)=>state.currentUser)
   const [selectedChat, setSelectedChat] = useState();
-  const [user, setUser] = useState({_id:"62cd03d0f2c02e53996ce808",name:"sarab",email:"sa@gmail.com"});
+  const [user, setUser] = useState(currentUser.user);
   const [notification, setNotification] = useState([]);
-  const [chats, setChats] = useState();
+  const [chats, setChats] = useState([]);
 
   return <ChatContext.Provider value={{
     selectedChat,

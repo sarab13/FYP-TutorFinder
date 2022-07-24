@@ -49,6 +49,7 @@ const accessChat = asyncHandler(async (req, res) => {
       throw new Error(error.message);
     }
   }
+  
 });
 
 //@description     Fetch all chats for a user
@@ -56,6 +57,7 @@ const accessChat = asyncHandler(async (req, res) => {
 //@access          Protected
 const fetchChats = asyncHandler(async (req, res) => {
     const userId=req.body.userId;
+    console.log(userId)
   try {
     Chat.find({ users: { $elemMatch: { $eq: userId } } })
       .populate("users", "-password")

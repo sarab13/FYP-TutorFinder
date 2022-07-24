@@ -28,14 +28,12 @@ const MyChats = ({ fetchAgain }) => {
   const fetchChats = async () => {
     // console.log(user._id);
     try {
-      const body={
-        userId:user
-      }
+      const {data}= await axios.post("/api/chat/allchats",{userId:user._id}); 
+      setChats([...data]);
+      console.log(chats)
 
-      const { data } = await axios.get("/api/chat",body);
-      console.log(data)
-      setChats(data);
     } catch (error) {
+      console.log(error)
       toast({
         title: "Error Occured!",
         description: "Failed to Load the chats",
@@ -86,7 +84,7 @@ const MyChats = ({ fetchAgain }) => {
           </Button>
         </GroupChatModal>
       </Box>
-      <Box
+     <Box
         display="flex"
         flexDirection="column"
         p={3}
@@ -109,9 +107,8 @@ const MyChats = ({ fetchAgain }) => {
                 borderRadius="lg"
                 key={chat._id}
               >
-                <Text>
-                  {!chat.isGroupChat
-                    ? getSender(loggedUser, chat.users)
+                
+                <Text>{!chat.isGroupChat? getSender(user, chat.users)
                     : chat.chatName}
                 </Text>
                 {chat.latestMessage && (
@@ -123,12 +120,13 @@ const MyChats = ({ fetchAgain }) => {
                   </Text>
                 )}
               </Box>
+
             ))}
           </Stack>
         ) : (
           <ChatLoading />
         )}
-      </Box>
+        </Box> 
     </Box>
   );
 };

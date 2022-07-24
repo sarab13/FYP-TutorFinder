@@ -69,8 +69,8 @@ function SideDrawer({tutorId}) {
   };
 
   useEffect(()=>{
-  if(location.state!=null)
-    accessChat(location.state)
+  if(tutorId)
+    accessChat(tutorId)
    
   },[])
   const handleSearch = async () => {
@@ -112,7 +112,7 @@ function SideDrawer({tutorId}) {
     try {
       setLoadingChat(true);
     
-      const { data } = await axios.post(`/api/chat`, { userId });
+      const { data } = await axios.post(`/api/chat`, { userId,senderId:user._id });
 
       if (!chats.find((c) => c._id === data._id)) setChats([data, ...chats]);
       setSelectedChat(data);
