@@ -71,7 +71,6 @@ function SideDrawer({tutorId}) {
   useEffect(()=>{
   if(tutorId)
     accessChat(tutorId)
-   
   },[])
   const handleSearch = async () => {
     if (!search) {

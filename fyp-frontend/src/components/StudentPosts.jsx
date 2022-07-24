@@ -2,12 +2,16 @@ import React,{useState} from 'react'
 import moment from 'moment'
 import axios from 'axios';
 import styled from "styled-components"
-import { FcGraduationCap, FcViewDetails ,FcBusinessman} from "react-icons/fc";
-import { GoLocation, GoCalendar } from "react-icons/go";
-import { useSelector } from 'react-redux';
-import { useEffect } from 'react';
-import { Navigate,Link } from 'react-router-dom';
+import { GoCalendar } from "react-icons/go";
+import { useDispatch, useSelector } from 'react-redux';
 
+
+
+
+
+import { useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { logoutUser } from '../redux/actions/action';
 const Container=styled.div`
 height: 80px;
 background-color: lightgrey;
@@ -145,9 +149,12 @@ margin-left: 10px;
 
 
 export const StudentPosts = () => {
+   
+    const dispatch=useDispatch()
+    const navigate=useNavigate()
     const currentUser=useSelector((state)=>state.currentUser)
     const [posts,setPosts]=useState([])
-
+    
     const getPosts=async()=>{
         const result=await axios.post(`/myposts/${currentUser.user._id}`)
         console.log(result)
@@ -156,17 +163,24 @@ export const StudentPosts = () => {
     useEffect(()=>{
         getPosts()
     },[])
+    const handleLogout=()=>{
+      dispatch(logoutUser())
+      navigate('/login')
+  }
     return (
         <div>
+
+
+
         <Container>
             <Wrapper>
             <Left>
             <Logo>Tutor Finder</Logo>
             <Menu>
-                <MenuItem>My Posts</MenuItem>
+            <MenuItem><Link to='/myposts'>My Posts</Link></MenuItem>
                 <MenuItem>Find Tutors</MenuItem>
-                <MenuItem>Reviews</MenuItem>
-                
+                <MenuItem><Link to='/chat'>Messages</Link></MenuItem>
+                <MenuItem><Button onClick={handleLogout}>Logout</Button></MenuItem>
                 
 
             </Menu>

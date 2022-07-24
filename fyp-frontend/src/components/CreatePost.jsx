@@ -1,8 +1,9 @@
 import React,{useState,useEffect} from 'react'
-import { Navigate } from 'react-router-dom'
+import { Navigate, useNavigate } from 'react-router-dom'
 import styled from "styled-components"
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { logoutUser } from '../redux/actions/action'
 const Container=styled.div`
 height: 80px;
 background-color: lightgrey;
@@ -86,7 +87,14 @@ margin-top: 20px;
 
 
 const CreatePost = () => {
+    const dispatch=useDispatch()
+    const navigate=useNavigate()
     const currentUser=useSelector((state)=>state.currentUser)
+
+    const handleLogout=()=>{
+        dispatch(logoutUser())
+        navigate('/login')
+    }
     if(!currentUser.isLoggedIn){
         return <Navigate to='/login'/>
     }
@@ -99,14 +107,14 @@ const CreatePost = () => {
             <Menu>
                 <MenuItem><Link to='/myposts'>My Posts</Link></MenuItem>
                 <MenuItem>Find Tutors</MenuItem>
-                <MenuItem>Reviews</MenuItem>
+                <MenuItem><Link to='/chat'>Messages</Link></MenuItem>
                 
                 
 
             </Menu>
             
             </Left>
-            <Button>Post Requirement</Button>
+            <Button onClick={handleLogout}>Logout</Button>
             
             
             </Wrapper>

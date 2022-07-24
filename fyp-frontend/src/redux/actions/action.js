@@ -1,4 +1,4 @@
-import { SAVE_BID_DETAILS, SIGNIN } from '../actionTypes/types';
+import { LOGOUT, SAVE_BID_DETAILS, SIGNIN } from '../actionTypes/types';
 import { TOGGLE_COMPLETE_PROFILE } from '../actionTypes/types';
 
     export const signIn = (user) => {
@@ -23,5 +23,11 @@ import { TOGGLE_COMPLETE_PROFILE } from '../actionTypes/types';
         return {
             type:SAVE_BID_DETAILS,
             payload:bid
+        }
+    }
+
+    export const logoutUser=()=>{
+        return {
+            type:LOGOUT
         }
     }

@@ -40,7 +40,6 @@ cursor:pointer;`
 
 export default function MyPost() {
     const {id}=useParams()
-    alert(id)
     const [proposalslist,setProposalsList]=useState(undefined)
     const [post,setPost]=useState({
         title:'',
@@ -89,8 +88,8 @@ export default function MyPost() {
             <Logo>Tutor Finder</Logo>
             <Menu>
                 <MenuItem>Dashboard</MenuItem>
-                <Link to='/findjobs'>Find jobs</Link>
-                <Link to='/myprofile'>View Profile</Link>   
+                <MenuItem><Link to='/findjobs'>Find jobs</Link></MenuItem>
+                <MenuItem><Link to='/myprofile'>View Profile</Link></MenuItem>   
                 
 
             </Menu>

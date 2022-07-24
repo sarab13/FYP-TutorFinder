@@ -1,4 +1,4 @@
-import { SIGNIN } from '../actionTypes/types';
+import { LOGOUT, SIGNIN } from '../actionTypes/types';
 
 
     const INITIAL_STATE = {
@@ -18,6 +18,10 @@ import { SIGNIN } from '../actionTypes/types';
                  ...state, isLoggedIn:true, user:action.payload,
 
                };
+            case LOGOUT:
+              return {
+                  isLoggedIn:false,user:{}
+              }
            
              default: return state;
 

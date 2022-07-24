@@ -2,14 +2,14 @@ import React,{useEffect} from 'react'
 import styled from "styled-components"
 import { FcGraduationCap, FcViewDetails ,FcBusinessman} from "react-icons/fc";
 import { GoLocation, GoCalendar } from "react-icons/go";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 import moment from 'moment'
 
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { toggleProfileStatus } from '../redux/actions/action';
+import { logoutUser, toggleProfileStatus } from '../redux/actions/action';
 import axios from 'axios'
-import { Link,useNavigate } from 'react-router-dom';
+import { Link} from 'react-router-dom';
 import { useState } from 'react';
 const Container=styled.div`
 height: 80px;
@@ -185,7 +185,10 @@ const TeacherView = () => {
 
 
       const profileStatus=useSelector(state=>state.tProfileStatus)
-
+     const handleLogout=()=>{
+         dispatch(logoutUser())
+         navigate('/login')
+     }
     //if(!profileStatus.isCompleteProfile){
     //    return <Navigate to='/updateprofile'/>
     //}
@@ -197,9 +200,9 @@ const TeacherView = () => {
             <Logo>Tutor Finder</Logo>
             <Menu>
                 <MenuItem>Dashboard</MenuItem>
-                <Link to='/findjobs'>Find jobs</Link>
-                <Link to='/myprofile'>View Profile</Link>   
-                
+                <MenuItem><Link to='/findjobs'>Find jobs</Link></MenuItem>
+                <MenuItem><Link to='/chat'>Messages</Link></MenuItem>                
+                <Button onClick={handleLogout}>Logout</Button>                
 
             </Menu>
             
