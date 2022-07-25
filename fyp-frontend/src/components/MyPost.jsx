@@ -120,6 +120,7 @@ export default function MyPost() {
             </div>
             <p>{proposal.tutorId}</p>
             <Link to='/chat' state={proposal.tutorId}>Message Now</Link>
+            <Link to='/createorder' state={[post,proposal]}>Order Now</Link>
             </div>
            )}
            

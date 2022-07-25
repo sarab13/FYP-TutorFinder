@@ -16,6 +16,8 @@ import MyPost from './components/MyPost';
 import Chatpage from './pages/Chatpage';
 import { ChatContext } from './Context/ChatProvider';
 import { useSelector } from 'react-redux';
+import OrderCreationForm from './pages/OrderCreationForm';
+import Test from './pages/Test';
 const App = () => {
   const currentUser=useSelector((state)=>state.currentUser)
   const [selectedChat, setSelectedChat] = useState();
@@ -45,6 +47,7 @@ const App = () => {
   <Route exact path='/findjobs/:id' element={<SinglePost/>}/>
   <Route exact path='/myposts/:id' element={<MyPost/>}/>
   <Route exact path='/chat' element={<Chatpage/>}/>
+  <Route exact path='/createorder' element={<OrderCreationForm/>}/>
 </Routes>
 </ChatContext.Provider>
 

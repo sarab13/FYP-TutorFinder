@@ -58,3 +58,8 @@
   justify-content: space-around;
   align-items: center;
 }
+
+.orderDetails input{
+  border: 1px solid black;
+  padding: 10px;
+}

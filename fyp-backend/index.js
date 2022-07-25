@@ -1,7 +1,11 @@
 require('./dbConnection')
 const express=require('express')
+const stripe = require("stripe")("sk_test_51LPIPuIilE8N6gbW7KGpVCxYX3Q5plkce6ROCTZN6PBMCJ0NBQZG9sWNYVICEXY7n1skVh3YFRl9FTDHM0G4rE2Z001Pro6H2X");
+const uuid = require("uuid").v4;
 const mongoose=require('mongoose')
 const User=require('./models/User')
+const Order=require('./models/Order')
+const Payment=require('./models/Payment')
 const Profile=require('./models/TeacherProfile')
 const JobPost=require('./models/JobPost')
 const Bid=require('./models/Bid')
@@ -48,7 +52,75 @@ var upload = multer({
         }
     }
 });
+app.post("/checkout", async (req, res) => {
+    let error;
+    let status;
+    try {
+      const { product, token } = req.body;
+   
+      const customer = await stripe.customers.create({
+        email: token.email,
+        source: token.id,
+      });
+   
+      const idempotency_key = uuid();
+      const charge = await stripe.charges.create(
+        {
+          amount: product.price * 100,
+          currency: "usd",
+          customer: customer.id,
+          receipt_email: token.email,
+          description: `${product.name}`,
+          shipping: {
+            name: token.card.name,
+            address: {
+              line1: token.card.address_line1,
+              line2: token.card.address_line2,
+              city: token.card.address_city,
+              country: token.card.address_country,
+              postal_code: token.card.address_zip,
+            },
+          },
+        },
+        {
+          idempotency_key,
+        }
+      );
+      let paymentInfo={paymentId:token.card.id,brand:token.card.brand,ownerId:product.ownerId}
+      status = "success";
+      res.json({status,paymentInfo})
+    } catch (error) {
+      console.error("Error:", error);
+      status = "failure";
+      res.json({status})
+    }
+   
+    
+  });
 
+//POST endpoint for Creating order
+app.post('/order',async(req,res)=>{
+    const {orderInfo,paymentInfo}=req.body;
+    console.log(paymentInfo)
+    try{
+        const newOrder=new Order({
+          ...orderInfo
+        })
+        await newOrder.save()
+        const newPayment=new Payment({
+            paymentInfo:paymentInfo.paymentId,
+            brand:paymentInfo.brand,
+            ownerId:paymentInfo.ownerId
+        })
+        await newPayment.save()
+        res.json({status:"success"})
+    }
+    catch(e){
+    
+       res.json({status:"failure"})
+    }
+
+})  
 app.post('/updateprofile', upload.single('profileImg'),async (req, res, next) => {
     const url = req.protocol + '://' + req.get('host')
     try{

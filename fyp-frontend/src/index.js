@@ -9,7 +9,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { ChatContext } from './Context/ChatProvider';
   import store from './redux/store';
   import { ChakraProvider } from '@chakra-ui/react'
-
+  
   let persistor = persistStore(store);
 
 ReactDOM.render(
@@ -17,7 +17,9 @@ ReactDOM.render(
   <ChakraProvider>
   <Provider store={store}>
     <PersistGate persistor={persistor}>
+    
     <App />
+    
     </PersistGate>
     </Provider>
     </ChakraProvider>
