@@ -1,0 +1,144 @@
+
+@import url("https://fonts.googleapis.com/css2?family=Work+Sans:wght@300&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Roboto");
+body{
+  font-family: "Roboto","Helvetica","Arial",sans-serif;
+
+}
+
+.App {
+  min-height: 100vh;
+  display: flex;
+  background-position: center;
+  background-size: cover;
+}
+
+::-webkit-scrollbar {
+  width: 0px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(136, 136, 136, 0.281);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.bodyContainer{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+}
+.bodyContainer .left,.bodyContainer .right{
+    width: 50%;
+    height: 100%;
+    padding: 20px;
+}
+
+.bodyContainer .right .box{
+  width: 100%;
+  
+  padding: 10px;
+  background-color: gray;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
+.box h3,.box h5{
+  display: inline-block;
+}
+
+.box .header{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.ordersDiv{
+  margin-top: 20px;
+  width: 75%;
+  padding: 10px;
+  margin: auto;
+  margin-top: 20px;
+  background-color: #555;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.ordersDiv h1{
+  font-weight: bold;
+  font-size: 30px;
+}
+.ordersDiv p span{
+  font-weight: bold;
+}
+.ordersDiv button{
+  margin-left: 20px;
+  background-color: azure;
+  border-radius: 10px;
+  padding: 15px;
+}
+
+.tutor-box{
+  display: flex;
+  flex-direction: column;
+  width: 40%;
+  background-color: antiquewhite;
+  padding: 20px;
+  border-radius: 20px;
+  margin-bottom: 10px;
+
+}
+.tutor-box .row1{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+}
+.tutor-box .row1 .left{
+  display: flex;
+  width: 40%;
+  justify-content: space-around;
+  align-items: center;
+}
+.Image{
+  border-radius: 50%;
+  height: 50px;
+  width: 50px;
+
+}
+.tutorName{
+  font-weight: bold;
+}
+.bid_left{
+  width: 70%;
+}
+.bid_right{
+  width: 20%;
+ 
+}
+.bidding_status_open{
+  color: green;
+}
+.bidding_status_close{
+color: red;
+}
+.bid_right1{
+  width: 20%;
+ margin-top: 20px;
+}
+.groupUsers{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
