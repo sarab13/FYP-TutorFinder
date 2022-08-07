@@ -124,7 +124,7 @@ export default function OrderCreationForm() {
     },
     paymentInfo
   }
-
+console.log(body)
   const res=await axios.post('/academypayment',body)
   if(res.data.status=="success"){
     alert("Order Created")

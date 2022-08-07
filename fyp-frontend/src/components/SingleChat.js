@@ -50,8 +50,10 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     const setChats=ChatState.setChats;
     const selectedChat=ChatState.selectedChat*/
    const checkIsPaid=async()=>{
+
       const result=await axios.get(`/ispaid?student_id=${currentUser.user._id}&tutor_id=${selectedChat.users[1]._id}`)
-     if(!result.data.error && result.data.message=="success"){
+     console.log(result)
+      if(!result.data.error && result.data.message=="success"){
     setIsPaid(true)
    }
    else{
@@ -119,14 +121,20 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       }
     }
   };
-
+  const getSubscribers=async()=>{
+    const result=await axios.get(`/getsubscribers?tutor_id=${currentUser.user._id}`)
+    setSelectedChat({...selectedChat,users:result.data.data})
+  // setLoading(false)
+   } 
   useEffect(() => {
+    //getSubscribers()
     socket = io(ENDPOINT);
     socket.emit("setup", user);
     socket.on("connected", () => setSocketConnected(true));
     socket.on("typing", () => setIsTyping(true));
     socket.on("stop typing", () => setIsTyping(false));
     return ()=>{
+    //  getSubscribers()
       socket.off("connected")
       socket.off("typing")
       socket.off("stop typing")
@@ -201,8 +209,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
               (!selectedChat.isGroupChat ? (
                 <>
                   {getSender(user, selectedChat.users)}
-                  {isPaid?'Your are subcriber of Academy.':
-                  <Link to='/subscribe' state={[selectedChat]}>Pay for Academy</Link>}
+                  {currentUser.user.role=="STUDENT"?(isPaid?'Your are subcriber of Academy.':
+                  <Link to='/subscribe' state={[selectedChat]}>Pay for Academy</Link>):''}
                   <ProfileModal
                     user={getSenderFull(user, selectedChat.users)}
                   />

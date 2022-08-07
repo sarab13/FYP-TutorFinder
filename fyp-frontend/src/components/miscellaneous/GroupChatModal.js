@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 import {
     Modal,
     ModalOverlay,
@@ -26,13 +26,26 @@ import {
     const [selectedUsers, setSelectedUsers] = useState([]);
     const [search, setSearch] = useState("");
     const [searchResult, setSearchResult] = useState([]);
+    const [allUsers,setAllUsers]=useState([])
     const [loading, setLoading] = useState(false);
     const toast = useToast();
     const currentUser=useSelector((state)=>state.currentUser)
-    const {  user,chats, setChats } = React.useContext(ChatContext);
-  
+    const {  user,chats, setChats,selectedChat } = React.useContext(ChatContext);
+    const getSubscribers=async()=>{
+     const result=await axios.get(`/getsubscribers?tutor_id=${currentUser.user._id}`)
+     ///console.log(data)
+     //setSearchResult(result.data.data)
+     setAllUsers(result.data.data)
+     console.log(result.data.data)
+    setLoading(false)
+    } 
+    useEffect(()=>{
+      setLoading(true)
+      getSubscribers()
+     },[])
     const handleGroup = (userToAdd) => {
-      if (selectedUsers.includes(userToAdd)) {
+      const exist=selectedUsers.filter((user)=>user.subscriber_id==userToAdd.subscriber_id)
+      if (exist.length>0) {
         toast({
           title: "User already added",
           status: "warning",
@@ -49,16 +62,24 @@ import {
     const handleSearch = async (query) => {
       setSearch(query);
       if (!query) {
+        setSearchResult([])
         return;
       }
   
       try {
         setLoading(true);
-        
-        const { data } = await axios.get(`/api/user?search=${search}`);
-        console.log(data);
+        const searchResults=allUsers.filter((user)=>(user.username.includes(query)))
+        const filterByReference = (arr1, arr2) => {
+          let res = [];
+          res = arr1.filter(el => {
+             return !arr2.find(element => {
+                return element.subscriber_id === el.subscriber_id;
+             });
+          });
+          return res;
+       }
         setLoading(false);
-        setSearchResult(data);
+        setSearchResult(filterByReference(searchResults, selectedUsers));
       } catch (error) {
         toast({
           title: "Error Occured!",
@@ -71,8 +92,8 @@ import {
       }
     };
   
-    const handleDelete = (delUser) => {
-      setSelectedUsers(selectedUsers.filter((sel) => sel._id !== delUser._id));
+    const handleDelete = async(delUser) => {
+      setSelectedUsers(selectedUsers.filter((sel) => sel.subscriber_id !== delUser.subscriber_id));
     };
   
     const handleSubmit = async () => {
@@ -93,7 +114,7 @@ import {
           `/api/chat/group`,
           {
             name: groupChatName,
-            users: JSON.stringify(selectedUsers.map((u) => u._id)),
+            users: JSON.stringify(selectedUsers.map((u) => u.subscriber_id)),
             admin:currentUser.user._id
           }
         );
@@ -153,7 +174,8 @@ import {
               <Box w="100%" d="flex" flexWrap="wrap">
                 {selectedUsers.map((u) => (
                   <UserBadgeItem
-                    key={u._id}
+                    key={u.subscriber_id}
+                    admin={currentUser.user._id}
                     user={u}
                     handleFunction={() => handleDelete(u)}
                   />
@@ -164,10 +186,9 @@ import {
                 <div>Loading...</div>
               ) : (
                 searchResult
-                  ?.slice(0, 4)
-                  .map((user) => (
+                  ?.map((user) => (
                     <UserListItem
-                      key={user._id}
+                      key={user.subscriber_id}
                       user={user}
                       handleFunction={() => handleGroup(user)}
                     />

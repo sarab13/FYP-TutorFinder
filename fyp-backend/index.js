@@ -153,7 +153,7 @@ app.post('/academypayment',async(req,res)=>{
       await AcademyPayment.findByIdAndUpdate({_id:isExist._id},{$push:{subscribers:{
         subscriber_id:orderInfo.student_id,
         start_date:orderInfo.start_date,
-        end_date:subcribers.end_date,
+        end_date:orderInfo.end_date,
         payment_id:orderInfo.payment_id,
         price:orderInfo.price
       }}})
@@ -184,12 +184,44 @@ app.post('/academypayment',async(req,res)=>{
      res.json({status:"failure"})
   }
 })
+app.get('/getsubscribers',async(req,res)=>{
+  console.log("hereeeeee")
+  const {tutor_id}=req.query;
+  console.log(tutor_id)
+  try{
+    const findDetails=await AcademyPayment.findOne({tutor_id})
+    let subscribers=[]
+
+    if(findDetails){
+    const users=findDetails.subscribers;
+    for(let i=0;i<users.length;i++){
+      let Subscriber={};
+      Subscriber.start_date=users[i].start_date
+      Subscriber.end_date=users[i].end_date
+      Subscriber.payment_id=users[i].payment_id;
+      const user=await User.findOne({_id:users[i].subscriber_id})
+      Subscriber.subscriber_id=users[i].subscriber_id;
+      Subscriber.username=user.username
+      Subscriber.email=user.email
+      Subscriber.role=user.role
+      subscribers.push(Subscriber)
+    }
+  }
+    res.json({error:false,data:subscribers})
+  }
+  catch(e){
+    console.log(e)
+    res.json({error:true,message:"something went wrong ggg."})
+  }
+})
+
 
 app.get('/ispaid',async(req,res)=>{
   const {student_id,tutor_id}=req.query;
   try{
-   const isExist=await AcademyPayment.findOne({student_id,tutor_id})
-   if(isExist){
+   const isExist=await AcademyPayment.findOne({tutor_id})
+   const filtered=isExist.subscribers.filter((user)=>user.subscriber_id==student_id)
+   if(filtered.length>0){
     res.json({error:false,message:"success"})
    }
    else{

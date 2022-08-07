@@ -51,7 +51,30 @@ const currentUser=useSelector((state)=>state.currentUser)
     fetchChats();
     // eslint-disable-next-line
   }, [fetchAgain]);
+  const getSubscribers=async(chat)=>{
+    if(chat.isGroupChat){
+    const result=await axios.get(`/getsubscribers?tutor_id=${currentUser.user._id}`)
+        //setSelectedChat(chat)
+        console.log(chat)
+        let members=[]
+        for(let i=0;i<result.data.data.length;i++){
+          for(let j=0;j<chat.users.length-1;j++){
+            if(result.data.data[i].subscriber_id==chat.users[j]._id){
+              members.push(result.data.data[i])
+              break;
+            }
+          }
+        }
+          setSelectedChat({...chat,users:members})
 
+    }
+    else{
+      setSelectedChat(chat)
+    }
+    
+    //setSelectedChat({...selectedChat,users:allUsers})
+   //setLoading(false)
+   } 
   return (
     <Box
       display={{ base: selectedChat ? "none" : "flex", md: "flex" }}
@@ -99,7 +122,7 @@ const currentUser=useSelector((state)=>state.currentUser)
           <Stack overflowY="scroll">
             {chats.map((chat) => (
               <Box
-                onClick={() => setSelectedChat(chat)}
+                onClick={() => getSubscribers(chat)}
                 cursor="pointer"
                 bg={selectedChat === chat ? "#38B2AC" : "#E8E8E8"}
                 color={selectedChat === chat ? "white" : "black"}

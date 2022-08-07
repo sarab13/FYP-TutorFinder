@@ -69,19 +69,19 @@ export default function SignIn() {
       setError("Please Enter username and passwords")
       return
     }
-    if(username.length<6){
-      setError('Username must be at least 6 characters long.')
-      return
-    }
+    //if(username.length<6){
+      //setError('Username must be at least 6 characters long.')
+      //return
+    //}
     if(!(username[0]>='a' && username[0]<='z')){
       setError('Username must start with alphabets.')
       return
     }
     
-    if(password.length<6){
-      setError("Password must be at least 6 characters long.")
-      return
-    }
+    //if(password.length<6){
+      //setError("Password must be at least 6 characters long.")
+      //return
+   // }
     
     const body={username,password,role}
     

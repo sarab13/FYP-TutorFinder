@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { ViewIcon } from "@chakra-ui/icons";
 import {
   Modal,
@@ -19,35 +19,61 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import { ChatContext } from "../../Context/ChatProvider";
 import UserBadgeItem from "../userAvatar/UserBadgeItem";
 import UserListItem from "../userAvatar/UserListItem";
 
 const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
+ const currentUser=useSelector((state)=>state.currentUser)
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [groupChatName, setGroupChatName] = useState();
+  const [selectedUsers,setSelectedUsers]=useState([])
   const [search, setSearch] = useState("");
   const [searchResult, setSearchResult] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [allUsers,setAllUsers]=useState([])
   const [renameloading, setRenameLoading] = useState(false);
   const toast = useToast();
 
   const { selectedChat, setSelectedChat, user } =React.useContext(ChatContext)
+console.log(selectedChat)
+const getSubscribers=async()=>{
+  const result=await axios.get(`/getsubscribers?tutor_id=${currentUser.user._id}`)
+  setAllUsers(result.data.data)
+  //return allUsers
+  console.log(selectedChat)
+ // setSelectedChat({...selectedChat,users:allUsers})
+ setLoading(false)
+ } 
 
+useEffect(()=>{
+  getSubscribers()
+},[])
   const handleSearch = async (query) => {
     setSearch(query);
     if (!query) {
+      setSearchResult([])
       return;
     }
 
     try {
       setLoading(true);
-      const { data } = await axios.get(`/api/user?search=${search}`);
-      console.log(data);
+      const searchResults=allUsers.filter((user)=>(user.username.includes(query)))
+      const filterByReference = (arr1, arr2) => {
+        let res = [];
+        res = arr1.filter(el => {
+           return !arr2.find(element => {
+              return element.subscriber_id === el.subscriber_id;
+           });
+        });
+        return res;
+     }
       setLoading(false);
-      setSearchResult(data);
+      setSearchResult(filterByReference(searchResults, selectedChat.users));
     } catch (error) {
       toast({
+
         title: "Error Occured!",
         description: "Failed to Load the Search Results",
         status: "error",
@@ -55,7 +81,6 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
         isClosable: true,
         position: "bottom-left",
       });
-      setLoading(false);
     }
   };
 
@@ -73,9 +98,10 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
         }
       );
 
-     
-
-      setSelectedChat(data);
+     console.log(data)
+      //getSubscribers(name)
+      setSelectedChat({...selectedChat,chatName:data.chatName});
+    
       setFetchAgain(!fetchAgain);
       setRenameLoading(false);
     } catch (error) {
@@ -93,7 +119,10 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
   };
 
   const handleAddUser = async (user1) => {
-    if (selectedChat.users.find((u) => u._id === user1._id)) {
+    console.log(user1)
+    console.log(selectedChat.users)
+    const exist=selectedChat.users.filter((user)=>user.subscriber_id===user1.subscriber_id)
+    if (exist.length>0) {
       toast({
         title: "User Already in group!",
         status: "error",
@@ -122,11 +151,13 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
         `/api/chat/groupadd`,
         {
           chatId: selectedChat._id,
-          userId: user1._id,
+          userId: user1.subscriber_id,
         }
       );
 
-      setSelectedChat(data);
+      setSelectedChat({...selectedChat,users:[user1,...selectedChat.users]});
+      //getSubscribers()
+
       setFetchAgain(!fetchAgain);
       setLoading(false);
     } catch (error) {
@@ -144,7 +175,7 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
   };
 
   const handleRemove = async (user1) => {
-    if (selectedChat.groupAdmin._id !== user._id && user1._id !== user._id) {
+    if (selectedChat.groupAdmin._id !== user._id && user1.subscriber_id !== user._id) {
       toast({
         title: "Only admins can remove someone!",
         status: "error",
@@ -162,11 +193,16 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
         `/api/chat/groupremove`,
         {
           chatId: selectedChat._id,
-          userId: user1._id,
+          userId: user1.subscriber_id,
         }
       );
 
-      user1._id === user._id ? setSelectedChat() : setSelectedChat(data);
+      //if(user1.subscriber_id === user._id) setSelectedChat()
+      //else {
+        const deleted=selectedChat.users.filter((userr)=>userr.subscriber_id!==user1.subscriber_id)
+        setSelectedChat({...selectedChat,users:deleted})
+       // getSubscribers()
+      //}
       setFetchAgain(!fetchAgain);
       fetchMessages();
       setLoading(false);
@@ -188,7 +224,7 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
     <>
       <IconButton display={{ base: "flex" }} icon={<ViewIcon />} onClick={onOpen} />
 
-      <Modal onClose={onClose} isOpen={isOpen} isCentered>
+      <Modal onClose={onClose} isOpen={isOpen} size='full' isCentered>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader
@@ -205,7 +241,7 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
             <Box w="100%" display="flex" flexWrap="wrap" pb={3}>
               {selectedChat.users.map((u) => (
                 <UserBadgeItem
-                  key={u._id}
+                  key={u.subscriber_id}
                   user={u}
                   admin={selectedChat.groupAdmin}
                   handleFunction={() => handleRemove(u)}
