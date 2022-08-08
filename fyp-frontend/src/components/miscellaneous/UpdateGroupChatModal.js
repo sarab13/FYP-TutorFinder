@@ -101,12 +101,25 @@ useEffect(()=>{
         }
       );
 
-     console.log(data)
+     
       //getSubscribers(name)
+
+      for(let i=0;i<selectedChat.users.length;i++){
+        let endpoint = 'https://api.ravenhub.io/company/6Z6EkKF28O/subscribers/'+selectedChat.users[i].subscriber_id+'/events/Mplvh97QLJ';
+  
+  await axios.post(endpoint, { "tutor" : currentUser.user.username,"newName":groupChatName,"oldName":selectedChat.chatName }, {
+  headers: {'Content-type': 'application/json'}
+  });
       setSelectedChat({...selectedChat,chatName:data.chatName});
     
       setFetchAgain(!fetchAgain);
       setRenameLoading(false);
+
+     
+       }
+
+
+
     } catch (error) {
       toast({
         title: "Error Occured!",
@@ -163,6 +176,10 @@ useEffect(()=>{
 
       setFetchAgain(!fetchAgain);
       setLoading(false);
+      let endpoint = 'https://api.ravenhub.io/company/6Z6EkKF28O/subscribers/'+user1.subscriber_id+'/events/8shZHG6nYU';
+
+await axios.post(endpoint, { "tutor" : currentUser.user.username,"groupName":selectedChat.chatName }, {
+headers: {'Content-type': 'application/json'}})
     } catch (error) {
       toast({
         title: "Error Occured!",
@@ -209,6 +226,12 @@ useEffect(()=>{
       setFetchAgain(!fetchAgain);
       fetchMessages();
       setLoading(false);
+      let endpoint = 'https://api.ravenhub.io/company/6Z6EkKF28O/subscribers/'+user1.subscriber_id+'/events/cisu9syuiD';
+
+      await axios.post(endpoint, { "tutor" : currentUser.user.username,"groupName":selectedChat.chatName }, {
+      headers: {'Content-type': 'application/json'}})
+
+
     } catch (error) {
       toast({
         title: "Error Occured!",

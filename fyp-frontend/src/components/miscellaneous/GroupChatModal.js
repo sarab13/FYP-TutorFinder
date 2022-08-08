@@ -128,6 +128,15 @@ import {
           isClosable: true,
           position: "bottom",
         });
+     for(let i=0;i<selectedUsers.length;i++){
+      let endpoint = 'https://api.ravenhub.io/company/6Z6EkKF28O/subscribers/'+selectedUsers[i].subscriber_id+'/events/8shZHG6nYU';
+
+await axios.post(endpoint, { "tutor" : currentUser.user.username,"groupName":groupChatName }, {
+headers: {'Content-type': 'application/json'}
+});
+     }
+
+        
       } catch (error) {
         toast({
           title: "Failed to Create the Chat!",
