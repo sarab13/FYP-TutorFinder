@@ -1,3 +1,4 @@
+import axios from 'axios';
 export const isSameSenderMargin = (messages, m, i, userId) => {
     // console.log(i === messages.length - 1);
   
@@ -42,7 +43,11 @@ export const isSameSenderMargin = (messages, m, i, userId) => {
    // return 'hi'
   return users[0]._id === loggedUser._id ? users[1].username : users[0].username;
   };
-  
+  export const getAdmin=(id)=>{
+    //console.log(id)
+    
+    return id
+  }
   export const getSenderFull = (loggedUser, users) => {
     return users[0]._id === loggedUser._id ? users[1] : users[0];
   };

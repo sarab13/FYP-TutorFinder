@@ -10,7 +10,9 @@ import GroupChatModal from "./miscellaneous/GroupChatModal";
 import { Button } from "@chakra-ui/react";
 import { ChatContext } from "../Context/ChatProvider";
 import { useSelector } from 'react-redux';
-
+import  io  from 'socket.io-client';
+const ENDPOINT = "http://localhost:5000"; // "https://talk-a-tive.herokuapp.com"; -> After deployment
+var socket;
 const MyChats = ({ fetchAgain }) => {
 const currentUser=useSelector((state)=>state.currentUser)
  const { selectedChat, setSelectedChat, user, chats, setChats } = React.useContext(ChatContext);
@@ -25,7 +27,11 @@ const currentUser=useSelector((state)=>state.currentUser)
  const setChats=ChatState.setChats;
  const selectedChat=ChatState.selectedChat*/
   const toast = useToast();
-
+  const handleUpdate=()=>{
+    console.log("updayed")
+  }
+ 
+  
   const fetchChats = async () => {
     // console.log(user._id);
     try {

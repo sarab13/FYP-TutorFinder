@@ -54,6 +54,7 @@ var upload = multer({
         }
     }
 });
+
 app.post("/checkout", async (req, res) => {
     let error;
     let status;
@@ -92,7 +93,7 @@ app.post("/checkout", async (req, res) => {
       status = "success";
       res.json({status,paymentInfo})
     } catch (error) {
-      console.error("Error:", error);
+      //console.error("Error:", error);
       status = "failure";
       res.json({status})
     }
@@ -103,7 +104,7 @@ app.post("/checkout", async (req, res) => {
 //POST endpoint for Creating order
 app.post('/order',async(req,res)=>{
     const {orderInfo,paymentInfo}=req.body;
-    console.log(paymentInfo)
+  //  console.log(paymentInfo)
     try{
         const newOrder=new Order({
           ...orderInfo
@@ -118,14 +119,14 @@ app.post('/order',async(req,res)=>{
         res.json({status:"success"})
     }
     catch(e){
-       console.log(e)
+      // console.log(e)
        res.json({status:"failure"})
     }
 
 })  
 app.post('/directorder',async(req,res)=>{
   const {orderInfo,paymentInfo}=req.body;
-  console.log(paymentInfo)
+  //console.log(paymentInfo)
   try{
       const newOrder=new DirectOrder({
         ...orderInfo
@@ -140,13 +141,13 @@ app.post('/directorder',async(req,res)=>{
       res.json({status:"success"})
   }
   catch(e){
-     console.log(e)
+     //console.log(e)
      res.json({status:"failure"})
   }
 })
 app.post('/academypayment',async(req,res)=>{
   const {orderInfo,paymentInfo}=req.body;
-  console.log(paymentInfo)
+ // console.log(paymentInfo)
   try{
     let isExist=await AcademyPayment.findOne({tutor_id:orderInfo.tutor_id})
     if(isExist){
@@ -180,14 +181,14 @@ app.post('/academypayment',async(req,res)=>{
       res.json({status:"success"})
   }
   catch(e){
-     console.log(e)
+    // console.log(e)
      res.json({status:"failure"})
   }
 })
 app.get('/getsubscribers',async(req,res)=>{
-  console.log("hereeeeee")
+ // console.log("hereeeeee")
   const {tutor_id}=req.query;
-  console.log(tutor_id)
+  //console.log(tutor_id)
   try{
     const findDetails=await AcademyPayment.findOne({tutor_id})
     let subscribers=[]
@@ -210,7 +211,7 @@ app.get('/getsubscribers',async(req,res)=>{
     res.json({error:false,data:subscribers})
   }
   catch(e){
-    console.log(e)
+    //console.log(e)
     res.json({error:true,message:"something went wrong ggg."})
   }
 })
@@ -640,10 +641,11 @@ const io = require("socket.io")(server, {
       socket.join(userData._id);
       socket.emit("connected");
     });
+   
   
     socket.on("join chat", (room) => {
       socket.join(room);
-      console.log("User Joined Room: " + room);
+     // console.log("User Joined Room: " + room);
     });
     socket.on("typing", (room) => socket.in(room).emit("typing"));
     socket.on("stop typing", (room) => socket.in(room).emit("stop typing"));

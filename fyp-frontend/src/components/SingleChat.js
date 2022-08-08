@@ -5,7 +5,7 @@ import { Box, Text } from "@chakra-ui/react";
 import "./styles.css";
 import { Link } from "react-router-dom";
 import { IconButton, Spinner, useToast } from "@chakra-ui/react";
-import { getSender, getSenderFull } from "../config/ChatLogics";
+import { getSender, getSenderFull,getAdmin } from "../config/ChatLogics";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { ArrowBackIcon } from "@chakra-ui/icons";
@@ -218,11 +218,13 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
               ) : (
                 <>
                   {selectedChat.chatName.toUpperCase()}
-                  <UpdateGroupChatModal
+                 {currentUser.user.role=="TEACHER"? <UpdateGroupChatModal
                     fetchMessages={fetchMessages}
                     fetchAgain={fetchAgain}
                     setFetchAgain={setFetchAgain}
-                  />
+                  />:<ProfileModal
+                  user={getAdmin(selectedChat.groupAdmin)}
+                />}
                 </>
               ))}
           </Text>

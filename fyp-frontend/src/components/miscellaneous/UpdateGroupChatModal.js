@@ -23,7 +23,9 @@ import { useSelector } from "react-redux";
 import { ChatContext } from "../../Context/ChatProvider";
 import UserBadgeItem from "../userAvatar/UserBadgeItem";
 import UserListItem from "../userAvatar/UserListItem";
-
+import  io  from 'socket.io-client';
+const ENDPOINT = "http://localhost:5000"; // "https://talk-a-tive.herokuapp.com"; -> After deployment
+var socket;
 const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
  const currentUser=useSelector((state)=>state.currentUser)
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -50,6 +52,7 @@ const getSubscribers=async()=>{
 useEffect(()=>{
   getSubscribers()
 },[])
+
   const handleSearch = async (query) => {
     setSearch(query);
     if (!query) {
@@ -196,7 +199,7 @@ useEffect(()=>{
           userId: user1.subscriber_id,
         }
       );
-
+      
       //if(user1.subscriber_id === user._id) setSelectedChat()
       //else {
         const deleted=selectedChat.users.filter((userr)=>userr.subscriber_id!==user1.subscriber_id)
