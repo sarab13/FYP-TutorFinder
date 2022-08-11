@@ -61,6 +61,7 @@ export default function SinglePost() {
   const Bids=useSelector((state)=>state.Bids)
 const [price,setPrice]=useState(0)
 const [isSubmit,setIsSubmit]=useState(false)
+
 const [isDisable,setIsDisable]=useState(false)
 const [resMessage,setResMessage]=useState('')
 const [message,setMessage]=useState('')

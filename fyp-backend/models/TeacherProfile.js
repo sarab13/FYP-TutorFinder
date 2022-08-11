@@ -1,5 +1,6 @@
 const mongoose=require('mongoose')
 const subjectSchema=mongoose.Schema({_id:false,id:Number,name:String})
+const reviewSchema=mongoose.Schema({stars:Number,message:String,studentId:String})
 
 const profileSchema=new mongoose.Schema({
     profile_pic:String,
@@ -13,6 +14,7 @@ const profileSchema=new mongoose.Schema({
     qualification:String,
     experience:String,
     fee:Number,
+    reviews:[reviewSchema],
     tutorId:{
         type:String,
         required:true

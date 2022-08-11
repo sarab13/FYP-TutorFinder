@@ -283,6 +283,30 @@ app.put('/editprofile',upload.single('profileImg'),async(req,res)=>{
   })
 
 })
+app.post('/review', async(req,res)=>{
+  const {tutorId,stars,message}=req.body;
+  console.log(tutorId)
+  if(!tutorId || !stars || !message ){
+    res.json({error:true,message:"provide all the details"})
+    return
+  }
+  try{
+    let review={
+      stars,
+      message
+    }
+    const profile=await Profile.findOne({tutorId})
+    await Profile.findByIdAndUpdate({_id:profile._id},{$push:{reviews:review}})
+    res.json({error:false})
+
+  }catch(e){
+    console.log(e)
+    res.json({error:true,message:"something went wrong"})
+
+
+  }
+
+})
 
 app.post('/register',async(req,res)=>{
     const user=req.body;
@@ -387,7 +411,7 @@ app.post('/myposts/:id',async(req,res)=>{
     const userId=req.params.id;
     console.log(userId)
     try{
-    const Posts=await JobPost.find()
+    const Posts=await JobPost.find().sort({_id:-1})
     let myPosts=Posts.filter((post)=>post.user_id==userId)
     myPosts=myPosts.filter((post)=>(post.show==true))
     res.json({message:"success",myPosts})

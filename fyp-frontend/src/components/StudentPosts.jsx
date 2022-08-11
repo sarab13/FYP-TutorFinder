@@ -201,13 +201,16 @@ export const StudentPosts = () => {
         getPosts()
     },[])
     const handleDelete=async(jobId)=>{
+
       const body={jobId};
       const result=await axios.delete(`/deletepost?jobId=${jobId}`,body)
       if(result.data.error){
         alert("error")
       }
       else{
-        alert("successfully deleted")
+        const updatedPosts=posts.filter((post)=>post._id!==jobId)
+        setPosts(updatedPosts)
+     
       }
     }
     return (
@@ -231,6 +234,7 @@ export const StudentPosts = () => {
         </Container>
         <BottomContainer>
         <Text>My Posts</Text>
+        {posts.length<1 ?<p>No More Posts To Show</p>:''}
        {posts && posts.length>0 && posts.map((Post)=>(
        <LinkTag><ViewPostContainer>
 <Div>

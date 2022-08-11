@@ -142,3 +142,17 @@ color: red;
   flex-direction: row;
   justify-content: space-between;
 }
+.job_title_input{
+
+  flex: 1;
+  min-width: 98%;
+
+  padding: 10px;
+  border: 1px solid gray;
+  border-radius: 10px;
+  margin-top: 5px;
+
+}
+.text{
+  font-weight: bold;
+}

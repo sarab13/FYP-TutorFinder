@@ -45,7 +45,6 @@
     "styled-components": "^5.3.1",
     "web-vitals": "^1.0.1"
   },
-
   "eslintConfig": {
     "extends": [
       "react-app",

@@ -50,7 +50,7 @@ const Form=styled.form`
 `
 const Input=styled.input`
 flex: 1;
-  min-width: 40%;
+  min-width: 98%;
 
   padding: 10px;
   border: 1px solid gray;
@@ -79,7 +79,9 @@ border-radius: 10px;
 cursor: pointer;
 margin-top: 10px;
 `
-
+const Error=styled.p`
+color:red;
+`
 const Post = () => {
   const navigate=useNavigate()
   const location=useLocation()
@@ -121,7 +123,15 @@ const Post = () => {
     setSubjects([...newArray])
 }
 const handleTitle=(e)=>{
-  setTitle(e.target.value)
+    if(title.length>48){
+      setError("Title Length should be 50 characters.")
+    }
+    else{
+      setError('')
+    }
+    setTitle(e.target.value)
+    
+  
 }
 const handleDescription=(e)=>{
   setDescription(e.target.value)
@@ -210,7 +220,7 @@ else{
             <Form>
             
                 <Lable>Title:</Lable>
-                <Input required type="text" value={title} onChange={handleTitle}/>
+                <input className="job_title_input" required type="text" value={title} maxlength="50" onChange={handleTitle}/>
                 <Lable>Description</Lable>
                 <TextArea value={description} onChange={handleDescription}/>
                 <Lable>Budget In USD:</Lable>
@@ -226,7 +236,7 @@ else{
                   />
                 <Lable>Deadline</Lable>
                 <Input  onChange={handleDeadline} value={deadline} type="datetime-local"/>
-                <p>{error}</p>
+                <Error>{error}</Error>
                 {location.state!==null?
                 <Button onClick={handleUpdate}>Update</Button>:
                 <Button onClick={handleSubmit}>Submit</Button>}
