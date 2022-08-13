@@ -19,6 +19,7 @@ import Chatpage from './pages/Chatpage';
 import { ChatContext } from './Context/ChatProvider';
 import { useSelector } from 'react-redux';
 import OrderCreationForm from './pages/OrderCreationForm';
+import RegisterPage from './pages/RegisterPage'
 import MyOrders from './pages/MyOrders';
 import LoginPage from './pages/LoginPage'
 import SearchTutors from './components/SearchTutors';
@@ -43,7 +44,7 @@ const App = () => {
   }}>
   <Routes>
   <Route exact path='/' element={<Role/>}></Route>
-  <Route exact path='/register' element={<Register/>}></Route>
+  <Route exact path='/register' element={<RegisterPage/>}></Route>
   <Route exact path='/login' element={<LoginPage/>}></Route>
   <Route exact path='/createjob' element={<Post/>}></Route>
   <Route exact path='/myposts' element={<StudentPosts/>}></Route>
