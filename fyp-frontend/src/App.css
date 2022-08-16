@@ -156,3 +156,34 @@ color: red;
 .text{
   font-weight: bold;
 }
+
+.boxx{
+  width: 100%;
+  margin: auto;
+  height: 400px;
+  background-color: antiquewhite;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+
+}
+.boxx{width: 100%;}
+
+.chakra-tabs__tab-panel div{
+  width: 50%;
+
+  height: 200px;
+  background-color: antiquewhite;
+  border-radius: 10px;
+  margin: auto;
+  padding: 18px;
+
+  margin-top:20px;
+}
+.chakra-tabs__tab-panel div div{
+  height: auto;
+  float: left;
+}
+.orderButton{
+  
+}

@@ -220,7 +220,8 @@ else{
             <Form>
             
                 <Lable>Title:</Lable>
-                <input className="job_title_input" required type="text" value={title} maxlength="50" onChange={handleTitle}/>
+                <input className="job_title_input" required type="text" value={title} maxlength="50" 
+                onChange={handleTitle}/>
                 <Lable>Description</Lable>
                 <TextArea value={description} onChange={handleDescription}/>
                 <Lable>Budget In USD:</Lable>

@@ -1,8 +1,28 @@
 import React,{useState,useEffect} from 'react'; 
+import '../App.css'
 import {useSelector} from 'react-redux'
 import {Link} from 'react-router-dom'
 import axios from 'axios'
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react'
+import { fontsize } from 'react-notification-center-component';
+import styled from "styled-components"
+
+
+const Button = styled.button`
+  width: 25%;
+  border: none;
+  padding: 5px;
+  background-color: crimson;
+  color: white;
+  cursor: pointer;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  margin-top: 10px;
+  margin-right: 20px;
+  
+  
+
+`;
 export default function MyOrderPage(){
     const currentUser=useSelector((state)=>state.currentUser)
     const [activeOrders,setActiveOrders]=useState([])
@@ -108,63 +128,86 @@ export default function MyOrderPage(){
         </div>
     {activeOrders.length>0 && activeOrders.map((order)=>(
         <div><div>
-         <p>Tutor: <span><Link to='/'>{order.tutorName}</Link></span></p>
-        <h1>{order.jobTitle}</h1>
-        <p>order status: <span>{order.orderStatus}</span></p>
-        <p>{order.orderPrice}$</p>
+         <p className="tutorName">Tutor: <span><Link to='/'>{order.tutorName}</Link></span></p>
+        <h1 className="tutorName">{order.jobTitle}</h1>
+        <p className="tutorName">order status: <span>{order.orderStatus}</span></p>
+        <p className="tutorName">{order.orderPrice}$</p>
         </div>
         
-        <div><button onClick={()=>handleUpdate(order._id,"cancelled")}>Cancel</button>
-            <button onClick={()=>handleComplete(order._id)}>Mark as complete</button></div>
-       </div> 
+        <Button onClick={()=>handleUpdate(order._id,"cancelled")}>Cancel</Button>
+            <Button onClick={()=>handleComplete(order._id)}>Mark as complete</Button></div>
+       
     ))}
     {activeDirectOrders.length>0 && activeDirectOrders.map((order)=>(
-        <div><div>
-         <p>Tutor: <span><Link to='/'>{order.tutorName}</Link></span></p>
-        <h1>Direct Order</h1>
-        <p>order status: <span>{order.orderStatus}</span></p>
-        <p>{order.orderPrice}$</p>
+        <div>
+        <div>
+         <p className="tutorName">Tutor: <span><Link to='/'>{order.tutorName}</Link></span></p>
+        <h1 className="tutorName">Direct Order</h1>
+        </div>
+        <div>
+        <p className="tutorName">order status: <span>{order.orderStatus}</span></p>
+        <p className="tutorName">{order.orderPrice}$</p>
         </div>
         
-        <div><button onClick={()=>handleUpdateDirect(order._id,"cancelled")}>Cancel</button>
-            <button onClick={()=>handleComplete(order._id)}>Mark as complete</button></div>
+        
+         <Button onClick={()=>handleUpdateDirect(order._id,"cancelled")}>Cancel</Button>
+            <Button onClick={()=>handleComplete(order._id)}>Mark as complete</Button>
        </div> 
     ))}
     </TabPanel>
-    <TabPanel>
+    <TabPanel width={'100%'}>
+    
     {completedOrders.length>0 && completedOrders.map((order)=>(
         <div><div>
-         <p>Tutor: <span><Link to='/'>{order.tutorName}</Link></span></p>
-        <h1>{order.jobTitle}</h1>
-        <p>order status: <span>{order.orderStatus}</span></p>
-        <p>{order.orderPrice}$</p>
+        <div>
+         <p className="tutorName">Tutor: <span><Link to='/'>{order.tutorName}</Link></span></p>
+        <h1 className="tutorName">{order.jobTitle}</h1>
+        </div>
+        <div>
+        
+
+
+        <p className="tutorName">order status: <span>{order.orderStatus}</span></p>
+        <p className="tutorName">{order.orderPrice}$</p>
+        </div>
         </div>
         
-        <button disabled>{order.orderStatus}</button>
+ 
 
        </div> 
     ))}
+    
     {completedDirectOrders.length>0 && completedDirectOrders.map((order)=>(
-        <div><div>
-         <p>Tutor: <span><Link to='/'>{order.tutorName}</Link></span></p>
-        <h1>Direct Order</h1>
-        <p>order status: <span>{order.orderStatus}</span></p>
-        <p>{order.orderPrice}$</p>
+        <div>
+        <div>
+         <p className="tutorName">Tutor: <span><Link to='/'>{order.tutorName}</Link></span></p>
+        <h1 className="tutorName">Direct Order</h1>
+        </div>
+        <div>
+        <p className="tutorName">order status: <span>{order.orderStatus}</span></p>
+        <p className="tutorName">{order.orderPrice}$</p>
         </div>
         
-        <button disabled>{order.orderStatus}</button>
+        
 
        </div> 
     ))}
    
     </TabPanel>
-    <TabPanel>
+    <TabPanel >
     {cancelledOrders.length>0 && cancelledOrders.map((order)=>(
-        <div><div>
-         <p>Tutor: <span><Link to='/'>{order.tutorName}</Link></span></p>
-        <h1>{order.jobTitle}</h1>
-        <p>order status: <span>{order.orderStatus}</span></p>
-        <p>{order.orderPrice}$</p>
+
+        <div className="OrderBox">
+
+        <div>
+<div>
+         <p className="tutorName">Tutor: <span><Link to='/'>{order.tutorName}</Link></span></p>
+        <h1 className="tutorName">{order.jobTitle}</h1>
+        </div>
+        <div>
+        <p className="tutorName"> order status: <span>{order.orderStatus}</span></p>
+        <p className="tutorName">{order.orderPrice}$</p>
+        </div>
         </div>
         
         <button disabled>{order.orderStatus}</button>
@@ -172,16 +215,20 @@ export default function MyOrderPage(){
        </div> 
     ))}
     {cancelledDirectOrders.length>0 && cancelledDirectOrders.map((order)=>(
-        <div><div>
-         <p>Tutor: <span><Link to='/'>{order.tutorName}</Link></span></p>
-        <h1>{order.jobTitle}</h1>
-        <p>order status: <span>{order.orderStatus}</span></p>
-        <p>{order.orderPrice}$</p>
+        <div>
+        <div>
+         <p className="tutorName">Tutor: <span><Link to='/'>{order.tutorName}</Link></span></p>
+        <h1 className="tutorName">Direct Order</h1>
+        </div>
+        <div>
+        <p className="tutorName">order status: <span>{order.orderStatus}</span></p>
+        <p className="tutorName">{order.orderPrice}$</p>
+        </div>
         </div>
         
-        <button disabled>{order.orderStatus}</button>
+        
 
-       </div> 
+       
     ))}
     </TabPanel>
   </TabPanels>
