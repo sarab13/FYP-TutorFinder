@@ -4,6 +4,7 @@ import Footer from "./Footer";
 import { useSelector ,useDispatch} from "react-redux";
 import {useNavigate, Link,useLocation} from 'react-router-dom'
 import { logoutUser } from '../redux/actions/action';
+import TeacherNavBar from '../components/Teacher/TeacherNavBar'
 
 import { useEffect } from "react";
 import { useState } from "react";
@@ -178,28 +179,7 @@ const TeacherProfilePage = () => {
     }
     return (
         <div>
-
-             <Container>
-            <Wrapper>
-            <Left>
-            <Logo>Tutor Finder</Logo>
-            <Menu>
-                <MenuItem><Link to='/findjobs'>Find Jobs</Link></MenuItem>
-                <MenuItem><Link to='/chat'>Messages</Link></MenuItem>
-                {currentUser.user.role=="TEACHER"?<div> 
-                <MenuItem><Link to='/updateprofile' state={profile}>Edit Profile</Link></MenuItem></div>
-                :''}
-                
-
-            </Menu>
-            
-            </Left>
-            <Button onClick={handleLogout}>Logout</Button>
-            
-            
-            </Wrapper>
-           
-        </Container>
+<TeacherNavBar/>
         
         
         

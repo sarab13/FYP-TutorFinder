@@ -4,7 +4,7 @@ import { FcGraduationCap, FcViewDetails ,FcBusinessman} from "react-icons/fc";
 import { GoLocation, GoCalendar } from "react-icons/go";
 import { useNavigate } from 'react-router-dom';
 import moment from 'moment'
-
+import TeacherNavBar from './Teacher/TeacherNavBar'
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { logoutUser, toggleProfileStatus } from '../redux/actions/action';
@@ -211,24 +211,7 @@ const TeacherView = () => {
     //}
     return (
         <div>
-         <Container>
-            <Wrapper>
-            <Left>
-            <Logo>Tutor Finder</Logo>
-            <Menu>
-                <MenuItem>Dashboard</MenuItem>
-                <MenuItem><Link to='/findjobs'>Find jobs</Link></MenuItem>
-                <MenuItem><Link to='/chat'>Messages</Link></MenuItem>                
-                <Button onClick={handleLogout}>Logout</Button>                
-
-            </Menu>
-            
-            </Left>
-            
-            
-            
-            </Wrapper>
-        </Container>
+       <TeacherNavBar/>
         <BottomContainer>
         <Text>Online Tutor Jobs</Text>
         <SearchContainer>

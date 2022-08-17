@@ -102,10 +102,10 @@ export default function OrderCreationForm() {
     }
   const handleSubmit=async(e)=>{
     e.preventDefault();
-    if(endTime.length<1){
-        setError("Please set End Time for Order.");
-        return
-    }
+  //  if(endTime.length<1){
+    //    setError("Please set End Time for Order.");
+      //  return
+    //}
   //  if(!isPayment){
     //    setError("Please make payment first.");
       //  return

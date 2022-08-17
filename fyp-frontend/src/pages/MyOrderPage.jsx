@@ -6,10 +6,11 @@ import axios from 'axios'
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react'
 import { fontsize } from 'react-notification-center-component';
 import styled from "styled-components"
+import StudentNavbar from "../components/Student/StudentNavbar"
 
 
 const Button = styled.button`
-  width: 25%;
+  
   border: none;
   padding: 5px;
   background-color: crimson;
@@ -20,8 +21,6 @@ const Button = styled.button`
   margin-top: 10px;
   margin-right: 20px;
   
-  
-
 `;
 export default function MyOrderPage(){
     const currentUser=useSelector((state)=>state.currentUser)
@@ -64,15 +63,16 @@ export default function MyOrderPage(){
             return order.orderStatus=="complete"
         })
         setCompletedDirectOrders(completeDirect)
-       
+        
+
 
     }
     useEffect(()=>{
         getOrders()
     },[])
     const handleComplete=(orderId)=>{
-        setIsComplete(true)
-       // handleUpdate(orderId,"complete")
+        //setIsComplete(true)
+       handleUpdate(orderId,"complete")
     }
     const handleUpdate=async(order_id,status)=>{
         const res=await axios.put("/updateorderstatus",{order_id,status})
@@ -108,6 +108,7 @@ export default function MyOrderPage(){
         setCompletedDirectOrders(complete)
     }
     return <>
+    <StudentNavbar/>
 <Tabs isFitted variant='enclosed'>
   <TabList mb='1em'>
     <Tab _selected={{fontSize:20, fontWeight:'bold'}}>Active</Tab>
@@ -116,26 +117,19 @@ export default function MyOrderPage(){
   </TabList>
   <TabPanels>
     <TabPanel>
-    <div class="modal-body">
-          {isComplete?<form>
-            <label>Your Price:</label><br/>
-            <input type='number' ></input><br/>
-            <label>Message:</label><br/>
-            <textarea rows="8" cols="65" ></textarea>
-            <input type='submit' value="Submit" ></input>
-            
-          </form>:''}
-        </div>
+   
     {activeOrders.length>0 && activeOrders.map((order)=>(
-        <div><div>
+        <div>
+        <div>
          <p className="tutorName">Tutor: <span><Link to='/'>{order.tutorName}</Link></span></p>
         <h1 className="tutorName">{order.jobTitle}</h1>
+        </div><div>
         <p className="tutorName">order status: <span>{order.orderStatus}</span></p>
         <p className="tutorName">{order.orderPrice}$</p>
         </div>
         
         <Button onClick={()=>handleUpdate(order._id,"cancelled")}>Cancel</Button>
-            <Button onClick={()=>handleComplete(order._id)}>Mark as complete</Button></div>
+            <Button onClick={()=>handleUpdate(order._id,"complete")}>Mark as complete</Button></div>
        
     ))}
     {activeDirectOrders.length>0 && activeDirectOrders.map((order)=>(
@@ -151,26 +145,27 @@ export default function MyOrderPage(){
         
         
          <Button onClick={()=>handleUpdateDirect(order._id,"cancelled")}>Cancel</Button>
-            <Button onClick={()=>handleComplete(order._id)}>Mark as complete</Button>
+            <Button onClick={()=>handleUpdateDirect(order._id,"complete")}>Mark as complete</Button>
        </div> 
     ))}
     </TabPanel>
     <TabPanel width={'100%'}>
     
     {completedOrders.length>0 && completedOrders.map((order)=>(
-        <div><div>
+        <div>
         <div>
          <p className="tutorName">Tutor: <span><Link to='/'>{order.tutorName}</Link></span></p>
         <h1 className="tutorName">{order.jobTitle}</h1>
         </div>
-        <div>
+        
         
 
-
+<div>
         <p className="tutorName">order status: <span>{order.orderStatus}</span></p>
         <p className="tutorName">{order.orderPrice}$</p>
         </div>
-        </div>
+        
+        
         
  
 

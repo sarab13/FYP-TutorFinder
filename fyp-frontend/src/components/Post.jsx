@@ -5,6 +5,7 @@ import Multiselect from 'multiselect-react-dropdown';
 import { useSelector } from "react-redux";
 import { useNavigate,useLocation } from "react-router-dom";
 import styled from "styled-components"
+import StudentNavbar from "../components/Student/StudentNavbar"
 const Logo=styled.h1`
 font-weight: bold;
 text-decoration: underline crimson;
@@ -211,7 +212,7 @@ else{
 }
     return (
         <div>
-        <Logo>Tutor Finder</Logo>
+        <StudentNavbar/>
         <Title>Post Your requirements</Title>
         <Container>
 <Wrapper>

@@ -2,6 +2,7 @@ import React,{useState,useEffect} from 'react'
 import styled from "styled-components"
 import axios from 'axios'
 import {Link} from 'react-router-dom'
+import StudentNavbar from '../components/Student/StudentNavbar'
 
 const Input=styled.input`
 flex: 1;
@@ -81,6 +82,7 @@ const SearchTutors = () => {
     }
     return (
         <div>
+        <StudentNavbar/>
         <BottomContainer>
          <Text>Find Tutors  {tutors && tutors.length}</Text>
         <SearchContainer>

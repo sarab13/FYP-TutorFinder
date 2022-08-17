@@ -4,39 +4,8 @@ import styled from "styled-components"
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { logoutUser } from '../redux/actions/action'
-const Container=styled.div`
-height: 80px;
-background-color: lightgrey;
+import StudentNavbar from '../components/Student/StudentNavbar'
 
-`
-const Wrapper=styled.div`
-padding: 20px 20px;
-display: flex;
-justify-content: space-between;
-align-items: center;
-`
-const Left=styled.div`
-width: 60%;
-display: flex;
-align-items: center;
-justify-content: space-between;
-`
-const Logo=styled.h1`
-font-weight: bold;
-text-decoration: underline crimson;
-`
-const Menu=styled.ul`
-display: flex;
-align-items: center;
-justify-content: space-between;
-list-style: none;
-`
-const MenuItem=styled.li`
-margin-right: 30px;
-font-size: 20px;
-font-weight: bold;
-
-`
 const Button=styled.button`
 border: 2px solid ;
 padding: 10px 15px;
@@ -100,25 +69,7 @@ const CreatePost = () => {
     }
     else return (
         <div>
-        <Container>
-            <Wrapper>
-            <Left>
-            <Logo>Tutor Finder</Logo>
-            <Menu>
-                <MenuItem><Link to='/myposts'>My Posts</Link></MenuItem>
-                <MenuItem>Find Tutors</MenuItem>
-                <MenuItem><Link to='/chat'>Messages</Link></MenuItem>
-                
-                
-
-            </Menu>
-            
-            </Left>
-            <Button onClick={handleLogout}>Logout</Button>
-            
-            
-            </Wrapper>
-        </Container>
+       <StudentNavbar/>
         <BottomContainer>
         <Text>you have not created post yet?</Text>
 

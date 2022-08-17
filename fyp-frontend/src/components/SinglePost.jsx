@@ -7,6 +7,7 @@ import { useState } from 'react'
 import axios, { Axios } from 'axios'
 import { useSelector,useDispatch } from 'react-redux'
 import { saveBidDetails } from '../redux/actions/action'
+import TeacherNavBar from '../components/Teacher/TeacherNavBar'
 
 const Container=styled.div`
 height: 80px;
@@ -44,7 +45,7 @@ cursor:pointer;
 
 `
 const Leftcontainer=styled.div`
-height: 100px;
+
 margin-top: 20px;
 width:400px;
 background-color: #f0c0c5;
@@ -146,24 +147,7 @@ console.log(result2)
   return (
     <div>
 
-<Container>
-            <Wrapper>
-            <Left>
-            <Logo>Tutor Finder</Logo>
-            <Menu>
-                <MenuItem>Dashboard</MenuItem>
-                <MenuItem><Link to='/findjobs'>Find jobs</Link></MenuItem>
-                <MenuItem><Link to='/myprofile'>View Profile</Link> </MenuItem>  
-                
-
-            </Menu>
-            
-            </Left>
-            
-            
-            
-            </Wrapper>
-        </Container>
+<TeacherNavBar/>
 
 <Leftcontainer>
 <div>

@@ -131,7 +131,7 @@ function SideDrawer({tutorId}) {
 
   return (
     <>
-      <Box
+      {/*<Box
         display="flex"
         flexDirection="row"
         justifyContent="space-between"
@@ -196,7 +196,7 @@ function SideDrawer({tutorId}) {
             </MenuList>
           </Menu>
         </div>
-      </Box>
+      </Box>*/}
 
       <Drawer placement="left" onClose={onClose} isOpen={isOpen}>
         <DrawerOverlay />

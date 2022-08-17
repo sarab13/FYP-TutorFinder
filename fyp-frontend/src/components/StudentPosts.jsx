@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { Navigate,Link } from 'react-router-dom';
 import NotificationCenter from 'react-notification-center-component';
+import StudentNavbar from "../components/Student/StudentNavbar"
 const Container=styled.div`
 height: 80px;
 background-color: lightgrey;
@@ -215,23 +216,8 @@ export const StudentPosts = () => {
     }
     return (
         <div>
-        <Container>
-            <Wrapper>
-            <Left>
-            <Logo>Tutor Finder</Logo>
-            <Menu>
-                <MenuItem>My Posts</MenuItem>
-                <MenuItem>Find Tutors</MenuItem>
-                <MenuItem><Link to='/manageorders'>Manage Orders</Link></MenuItem>
-                <NotificationCenter className="myCustomClass" appId="6Z6EkKF28O" subscriberId={currentUser.user._id}/>                
-            </Menu>
-            
-            </Left>
-            
-            
-            
-            </Wrapper>
-        </Container>
+        <StudentNavbar/>
+       
         <BottomContainer>
         <Text>My Posts</Text>
         {posts.length<1 ?<p>No More Posts To Show</p>:''}

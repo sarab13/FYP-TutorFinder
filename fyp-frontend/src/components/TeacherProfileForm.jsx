@@ -8,6 +8,7 @@ import { useNavigate,Navigate, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 
+
 const Logo=styled.h1`
 font-weight: bold;
 text-decoration: underline crimson;
@@ -161,7 +162,7 @@ const TeacherProfileForm = () => {
   else
     return (
         <div>
-        <Logo>Tutor Finder</Logo>
+        
         <Title>Enter Your Details </Title>
         <Container>
         <Wrapper>

@@ -7,6 +7,7 @@ import SideDrawer from "../components/miscellaneous/SideDrawer";
 import { ChatState } from "../Context/ChatProvider";
 import { ChatContext } from "../Context/ChatProvider";
 import { useLocation } from 'react-router-dom';
+import StudentNavbar from '../components/Student/StudentNavbar'
 const Chatpage = () => {
   let location=useLocation()
   const {user,setUser}=React.useContext(ChatContext)
@@ -16,6 +17,8 @@ const Chatpage = () => {
   
   return (
     <div style={{ width: "100%" }}>
+    <StudentNavbar/>
+    
       {user&&<SideDrawer tutorId={location.state==null?undefined:location.state} />}
       <Box display="flex" justifyContent="space-between" w="100%" h="91.5vh" p="10px">
         {user && <MyChats fetchAgain={fetchAgain} />}
