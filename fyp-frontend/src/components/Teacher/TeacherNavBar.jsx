@@ -84,9 +84,9 @@ const StudentNavbar = () => {
               Jobs
             </MenuButton>  
             <MenuList p={6}>
-              <MenuItem><Link to='/createjob'>Find Jobs</Link></MenuItem>
+              <MenuItem><Link to='/findjobs'>Find Jobs</Link></MenuItem>
               <MenuDivider />
-              <MenuItem><Link to='/myposts'>My Proposals</Link></MenuItem>
+              <MenuItem><Link to='/myproposals'>My Proposals</Link></MenuItem>
             </MenuList>
 </Menu>
 
@@ -95,6 +95,8 @@ const StudentNavbar = () => {
 
             <MenuItem><Link to='/test'>Manage Orders</Link></MenuItem>
             <MenuItem><Link to='/chat'>Messages</Link></MenuItem>
+            <MenuItem><Link to='/chat'>Reviews</Link></MenuItem>
+
 
             <NotificationCenter className="myCustomClass" appId="6Z6EkKF28O" subscriberId={currentUser.user._id}/> 
             <Menu>
@@ -123,13 +125,17 @@ const StudentNavbar = () => {
               <ProfileModal 
               user={currentUser}
               >
-             <MenuItem>View Profile</MenuItem>
+             <MenuItem><Link to='/myprofile'> View Profile </Link></MenuItem>
 
               </ProfileModal>
               
               
               
               <MenuDivider />
+              <MenuItem><Link to='/updateprofile'> Edit Profile </Link></MenuItem>
+              <MenuDivider />
+
+
               <MenuItem><Link to='/login' onClick={handleLogout}>Logout</Link></MenuItem>
             </MenuList>
             </Menu>             

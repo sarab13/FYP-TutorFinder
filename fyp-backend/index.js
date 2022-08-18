@@ -331,10 +331,32 @@ app.post('/register',async(req,res)=>{
       res.json({message:"success",user:dbUser})
     }
 })
+app.get('/myproposals',async(req,res)=>{
+  const {tutorId}=req.query;
+  try{
+    let proposalsList=[];
+  const myBids=await Bid.find({tutorId})
+  for(let i=0;i<myBids.length;i++){
+    let proposal={}
+    proposal.message=myBids[i].message;
+    proposal.price=myBids[i].price;
+    const post=await JobPost.findOne({_id:myBids[i].jobId})
+    proposal.jobId=post._id;
+    proposal.jobTitle=post.title;
+    const user=await User.findOne({_id:post.user_id})
+    proposal.studentName=user.username;
+    proposalsList.push(proposal)
 
+  }
+  res.json({error:false,data:proposalsList})
+  }
+  catch(e){
+    res.json({error:true,message:"Something went wrong."})
+  }
+})
 app.post('/login',async(req,res)=>{
     const {username,password,role}=req.body;
-    const user=await User.findOne({username});
+    const user=await User.findOne({username:username.toLowerCase()});
     if(!user){
         res.json({error:true, message:"Username or Password is incorrect"})
     }

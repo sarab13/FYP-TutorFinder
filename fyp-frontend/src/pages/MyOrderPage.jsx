@@ -5,10 +5,20 @@ import {Link} from 'react-router-dom'
 import axios from 'axios'
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react'
 import { fontsize } from 'react-notification-center-component';
+import StarRatings from 'react-star-ratings';
 import styled from "styled-components"
 import StudentNavbar from "../components/Student/StudentNavbar"
+import { useDisclosure } from '@chakra-ui/react'
 
-
+import {
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalHeader,
+    ModalFooter,
+    ModalBody,
+    ModalCloseButton,
+  } from '@chakra-ui/react'
 const Button = styled.button`
   
   border: none;
@@ -20,10 +30,15 @@ const Button = styled.button`
   border-radius: 10px;
   margin-top: 10px;
   margin-right: 20px;
+  width: 40%;
+  height: 50px;
   
 `;
 export default function MyOrderPage(){
+    const [rating,changeRating]=useState()
+    
     const currentUser=useSelector((state)=>state.currentUser)
+    const [isSubmit,setIsSubmit]=useState(true)
     const [activeOrders,setActiveOrders]=useState([])
     const [cancelledOrders,setCancelledOrders]=useState([])
     const [completedOrders,setCompletedOrders]=useState([])
@@ -31,7 +46,9 @@ export default function MyOrderPage(){
     const [cancelledDirectOrders,setCancelledDirectOrders]=useState([])
     const [completedDirectOrders,setCompletedDirectOrders]=useState([])
     const [isComplete,setIsComplete]=useState(false)
-
+    const { isOpen, onOpen, onClose } = useDisclosure()
+    const finalRef = React.useRef(null)
+    
     const getOrders=async()=>{
         const result=await axios.get(`/myorders?userId=${currentUser.user._id}`)
         const result2=await axios.get(`/mydirectorders?userId=${currentUser.user._id}`)
@@ -164,8 +181,8 @@ export default function MyOrderPage(){
         <p className="tutorName">order status: <span>{order.orderStatus}</span></p>
         <p className="tutorName">{order.orderPrice}$</p>
         </div>
-        
-        
+        <Button onClick={()=>setIsSubmit(true)}>leave a review</Button>
+       
         
  
 
@@ -182,9 +199,33 @@ export default function MyOrderPage(){
         <p className="tutorName">order status: <span>{order.orderStatus}</span></p>
         <p className="tutorName">{order.orderPrice}$</p>
         </div>
-        
-        
+        <Button onClick={onOpen}>leave a review</Button>
+       
+        <Modal finalFocusRef={finalRef} isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Modal Title</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            
+          <StarRatings
+          rating={rating}
+          starRatedColor="blue"
+          changeRating={changeRating}
+          numberOfStars={6}
+          name='rating'
+        />
+          
+          </ModalBody>
 
+          <ModalFooter>
+            <Button colorScheme='blue' mr={3} onClick={onClose}>
+              Close
+            </Button>
+            <Button variant='ghost'>Secondary Action</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
        </div> 
     ))}
    

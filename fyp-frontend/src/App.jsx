@@ -25,6 +25,7 @@ import LoginPage from './pages/LoginPage'
 import SearchTutors from './components/SearchTutors';
 import DirectOrder from './pages/DirectOrder.jsx'
 import DetailedTeacherView from './components/DetailedTeacherView'
+import MyProposals from './components/Teacher/MyProposals'
 const App = () => {
   const currentUser=useSelector((state)=>state.currentUser)
   const [selectedChat, setSelectedChat] = useState();
@@ -62,6 +63,9 @@ const App = () => {
   <Route exact path='/directorder' element={<DirectOrder/>}/>
   <Route exact path='subscribe' element={<AcademyPaymentForm/>}/>
   <Route exact path='/test2' element={<DetailedTeacherView/>}/>
+  <Route exact path='/myproposals' element={<MyProposals/>}/>
+
+
 
   
 </Routes>

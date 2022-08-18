@@ -201,4 +201,11 @@ color: red;
 .chakra-tabs__tab-panel div div:first-child{
   width: 100%;
 }
-
+.PhoneInputCountrySelect{
+  width: 70px;
+  display: inline-block;
+}
+.PhoneInputCountryIcon{
+  display: inline;
+  
+}

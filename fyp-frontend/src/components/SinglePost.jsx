@@ -8,42 +8,13 @@ import axios, { Axios } from 'axios'
 import { useSelector,useDispatch } from 'react-redux'
 import { saveBidDetails } from '../redux/actions/action'
 import TeacherNavBar from '../components/Teacher/TeacherNavBar'
+import{MdPostAdd} from "react-icons/md"
+import moment from 'moment'
+import{BsCurrencyDollar ,BsGenderAmbiguous} from "react-icons/bs"
 
-const Container=styled.div`
-height: 80px;
-background-color: lightgrey;
 
-`
-const Wrapper=styled.div`
-padding: 20px 20px;
-display: flex;
-justify-content: space-between;
-align-items: center;
-`
-const Left=styled.div`
-width: 100%;
-display: flex;
-align-items: center;
-justify-content: space-between;
-`
-const Logo=styled.h1`
-font-weight: bold;
-text-decoration: underline crimson;
-font-size:20px;
-`
-const Menu=styled.ul`
-display: flex;
-align-items: center;
-justify-content: space-between;
-list-style: none;
-`
-const MenuItem=styled.li`
-margin-right: 30px;
-font-size: 20px;
-font-weight: bold;
-cursor:pointer;
 
-`
+
 const Leftcontainer=styled.div`
 
 margin-top: 20px;
@@ -55,7 +26,84 @@ margin-right: 200px;
 padding: 20px;
 margin-bottom: 20px;
 `
+const Rightcontainer=styled.div`
 
+margin-top: 20px;
+width:400px;
+background-color: #f0c0c5;
+margin-left: 20px;
+border-radius: 20px;
+margin-right: 200px;
+padding: 20px;
+margin-bottom: 20px;
+height: auto;
+
+`
+const BottomContainer=styled.div`
+
+margin-top: 50px;
+display: flex;
+align-items: center;
+justify-content: center;
+flex-direction: column;
+
+`
+const Text1=styled.h1`
+font-size: 15px;
+margin-top: 10px;
+margin-right: 10px;
+font-weight:bold;
+
+
+`
+const ViewPostContainer=styled.div`
+
+width: 100%;
+margin-top: 10px;
+
+
+
+
+padding: 20px;
+  margin-left: 20px;
+  
+
+`
+const Tags=styled.div`
+
+height: 30px;
+background-color: lightgrey;
+
+padding-left: 10px;
+padding-right: 10px;
+text-align: center;
+margin-top: 5px;
+margin-left: 10px;
+border-radius:10px;
+
+`
+const Row=styled.div`
+
+display:flex;
+margin-left: 10px;
+margin-bottom: 10px;
+`
+const Text=styled.h1`
+font-size: 16px;
+
+margin-bottom: 10px;
+/*margin-top: 20px;
+margin-right: 10px;*/
+
+
+`
+const Box=styled.div`
+display: flex;
+
+`
+const Span=styled.span`
+font-weight: bold;
+`
 export default function SinglePost() {
   const dispatch=useDispatch()
   const currentUser=useSelector((state)=>state.currentUser)
@@ -148,14 +196,56 @@ console.log(result2)
     <div>
 
 <TeacherNavBar/>
-
+<Box>
 <Leftcontainer>
-<div>
-            <h3>{post.title}</h3>
-            <p>{post.description}</p>
-        </div>
+<BottomContainer>
+        <Text1>{post.title}</Text1>
+        <ViewPostContainer>
+        
+        <Row>
+        <Tags>Physics</Tags>
+        <Tags>Applied physics</Tags>
+
+        </Row>
+        <Row>
+      
+        <BsCurrencyDollar/> <Text>  <span className="text">Amount:</span> {post.budget}</Text>
+
+
+
+
+        </Row>
+        <Row>
+        <MdPostAdd/> <Text>  <span className="text">Posted:</span>{moment(post.deadline).fromNow()}</Text>
+        
+
+
+
+
+        </Row>
+       
+        <Text>
+        {post.description}
+
+
+        </Text>
+
+        
+
+
+
+        </ViewPostContainer>
+       
+        </BottomContainer>
+
 
 </Leftcontainer>
+{submittedBid.price===undefined?'':<Rightcontainer><div>
+  <h2 style={{textAlign:'center',fontWeight:'bold'}}>Submitted Bid Details</h2>
+  <h5><Span>Price:</Span>{submittedBid.price}</h5>
+  <h5><Span>Message:</Span> {submittedBid.message}</h5>
+  </div> </Rightcontainer> } 
+  </Box>
         
 
         <div class="container">
@@ -189,11 +279,7 @@ console.log(result2)
   </div>
   
 </div>
-{submittedBid.price===undefined?'':<Leftcontainer><div>
-  <h2>Submitted Bid Details</h2>
-  <h5>Price : {submittedBid.price}</h5>
-  <h5>Message: {submittedBid.message}</h5>
-  </div> </Leftcontainer> }  
+ 
 
 
     </div>

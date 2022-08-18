@@ -7,6 +7,9 @@ import { toggleProfileStatus } from '../redux/actions/action';
 import { useNavigate,Navigate, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
+import PhoneInput from 'react-phone-number-input'
+import { isPossiblePhoneNumber } from 'react-phone-number-input'
+
 
 
 const Logo=styled.h1`
@@ -63,7 +66,7 @@ flex: 1;
 const TextArea=styled.textarea`
  width: 400px;
   height: 100px;
-  padding: 20px;
+  padding: 10px;
   border: 1px solid gray;
 
 
@@ -93,15 +96,18 @@ const TeacherProfileForm = () => {
     gender:'',
     dob:'',
     location:'',
-    ph_no:'',
+    
     qualification:'',
     experience:'',
     fee:0
   })
+  const [phoneNo, setPhoneNo] = useState()
 
   const [uploadedImage,setUploaded] = useState('');
   const imageUploader = React.useRef(null);
   const [subjects,setSubjects]=useState([])
+  const [Error,SetError]=useState("")
+  const [dobError,setDobError]=useState('')
   const [Options,setOptions]=useState([{name: 'Physics', id: 1},{name: 'Computer', id: 2}])
   useEffect(() => {
     if(location.state){
@@ -125,10 +131,37 @@ const TeacherProfileForm = () => {
   const handleChange=(e)=>{
    const key=e.target.name;
    const value=e.target.value;
+
+   if(key=="dob"){
+    const date=new Date(value)
+    const difference=2022-date.getFullYear();
+    if(difference<15){
+      setDobError("You must be 15 Years old")
+      
+    }
+    else{
+      setDobError('')
+    }
+    
+  }
    setProfile({...profile,[key]:value})
+   
   }
   const handleSubmit=(e)=>{
+
     e.preventDefault()
+    if(!profile.name || !profile.qualification || !profile.description || !profile.img || !profile.gender || !profile.dob || !phoneNo || !profile.location){
+      SetError('please enter all data');
+      return
+    }
+    if(profile.description.length<198){
+      SetError(" Minimum description length should be 200 characters.")
+      return
+    }
+    if(!isPossiblePhoneNumber(phoneNo)){
+      SetError("phone no is invalid")
+      return
+    }
     const formData=new FormData();
     formData.append('profileImg', profile.img)
     formData.append('name',profile.name)
@@ -170,7 +203,7 @@ const TeacherProfileForm = () => {
             
                 <Lable>Profile Pic:</Lable>
                 <input onChange={handleImageUpload} ref={imageUploader} type="file" accept="image/*" multiple = "false" />
-                <div style={{width:'200px', height:'200px'}}>
+                <div >
               </div>
                 <Lable>Name</Lable>
                 <Input type="text" name='name' onChange={handleChange} value={profile.name}/>
@@ -188,12 +221,24 @@ const TeacherProfileForm = () => {
   
   <Lable>Date of birth</Lable>
   <Input type="date" name="dob" onChange={handleChange} value={profile.dob}/>
+  <p>{dobError}</p>
   <Lable>Location</Lable>
   <Input type="text" name="location" onChange={handleChange} value={profile.location}/>
   <Lable>Phone No</Lable>
-  <Input type="tel" name="ph_no" onChange={handleChange} value={profile.ph_no} />
+  <PhoneInput
+  style={{width:"20px"}}
+     international
+     countryCallingCodeEditable={false}
+     initialValueFormat="national"
+
+      placeholder="Enter phone number"
+      value={phoneNo}
+      onChange={setPhoneNo}
+      defaultCountry="PK"
+      />
+  
   <Lable>Education</Lable>
-  <Input type="text" name="education" onChange={handleChange} value={profile.qualification}/>
+  <Input type="text" name="qualification" onChange={handleChange} value={profile.qualification}/>
   <Lable>Subjects</Lable>
                 <Multiselect
                   options={Options} // Options to display in the dropdown
@@ -203,9 +248,10 @@ const TeacherProfileForm = () => {
                   displayValue="name" // Property name to display in the dropdown options
                   />
   <Lable>Teaching Experience</Lable>
-  <Input type="text" name="experience" onChange={handleChange} value={profile.experience}/>
+  <Input type="number" name="experience" onChange={handleChange} value={profile.experience}/>
   <Lable>Fee</Lable>
   <Input type="number" name="fee" onChange={handleChange} value={profile.fee}/>
+  <p>{Error}</p>
   <Button onClick={handleSubmit}>Submit</Button>
                 
             </Form>

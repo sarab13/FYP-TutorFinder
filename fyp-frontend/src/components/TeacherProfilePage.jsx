@@ -168,7 +168,7 @@ const TeacherProfilePage = () => {
      console.log(profile.subjects)
     }
     useEffect(()=>{
-        alert(location.state)
+        //alert(location.state)
         if(location.state==null)
         getProfileInfo(currentUser.user._id)
         else
@@ -228,7 +228,7 @@ const TeacherProfilePage = () => {
          
         </Row>
         <Column>
-            <Text1>{profile.experience} 5 years</Text1>
+            <Text1>{profile.experience}  years</Text1>
             <h1>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------</h1>
 
         </Column>

@@ -76,7 +76,7 @@ export default function SignIn() {
       setError('Username must be at least 6 characters long.')
       return
     }
-    if(!(username[0]>='a' && username[0]<='z')){
+    if(!((username[0]>='a' && username[0]<='z') || (username[0]>='A' && username[0]<='Z'))){
       setError('Username must start with alphabets.')
       return
     }
@@ -110,8 +110,8 @@ export default function SignIn() {
     }
     else{
       setError('')
-      dispatch(signIn(result.data.user))
-      navigate('/')
+      //dispatch(signIn(result.data.user))
+      navigate('/login')
     }
   }
 
@@ -196,7 +196,7 @@ export default function SignIn() {
               InputProps={{style:{fontSize:15}}}
               name="confirmPassword"
               label="Confirm Password"
-              type="confirmPassword"
+              type="password"
               id="confirmPassword"
               autoComplete="current-password"
             />
@@ -231,7 +231,7 @@ export default function SignIn() {
               </Grid>
               <Grid item>
                 <LinkMui href="#" variant="body2" style={{fontSize:15}}>
-                  {"Already Have an account? Sign In"}
+                 <Link to="/login"> {"Already Have an account? Sign In"}</Link>
                 </LinkMui>
               </Grid>
             </Grid>

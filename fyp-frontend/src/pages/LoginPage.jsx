@@ -73,7 +73,7 @@ export default function SignIn() {
       //setError('Username must be at least 6 characters long.')
       //return
     //}
-    if(!(username[0]>='a' && username[0]<='z')){
+    if(!((username[0]>='a' && username[0]<='z' )||(username[0]>='A' && username[0]<='Z' ) )) {
       setError('Username must start with alphabets.')
       return
     }
@@ -174,7 +174,7 @@ export default function SignIn() {
               </Grid>
               <Grid item>
                 <LinkMui href="#" variant="body2" style={{fontSize:15}}>
-                  {"Don't have an account? Sign Up"}
+                 <Link to='/register'>{"Don't have an account? Sign Up"} </Link> 
                 </LinkMui>
               </Grid>
             </Grid>
