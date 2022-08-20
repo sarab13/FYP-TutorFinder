@@ -95,7 +95,7 @@ const StudentNavbar = () => {
 
             <MenuItem><Link to='/test'>Manage Orders</Link></MenuItem>
             <MenuItem><Link to='/chat'>Messages</Link></MenuItem>
-            <MenuItem><Link to='/chat'>Reviews</Link></MenuItem>
+            <MenuItem><Link to='/treviews'>Reviews</Link></MenuItem>
 
 
             <NotificationCenter className="myCustomClass" appId="6Z6EkKF28O" subscriberId={currentUser.user._id}/> 

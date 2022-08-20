@@ -16,6 +16,7 @@ import TeacherView from './components/TeacherView';
 import SinglePost from './components/SinglePost';
 import MyPost from './components/MyPost';
 import Chatpage from './pages/Chatpage';
+import Reviews from './components/Teacher/Reviews'
 import { ChatContext } from './Context/ChatProvider';
 import { useSelector } from 'react-redux';
 import OrderCreationForm from './pages/OrderCreationForm';
@@ -64,7 +65,7 @@ const App = () => {
   <Route exact path='subscribe' element={<AcademyPaymentForm/>}/>
   <Route exact path='/test2' element={<DetailedTeacherView/>}/>
   <Route exact path='/myproposals' element={<MyProposals/>}/>
-
+  <Route exact path='/treviews' element={<Reviews/>}/>
 
 
   

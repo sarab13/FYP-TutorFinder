@@ -309,7 +309,40 @@ app.post('/review', async(req,res)=>{
   }
 
 })
-
+app.get('/taveragerating',async(req,res)=>{
+  const {tutorId}=req.query;
+  try{
+   const profile=await Profile.findOne({tutorId})
+   let sum=0.0;
+   for(let i=0;i<profile.reviews.length;i++){
+    sum+=profile.reviews[i].stars;
+   }
+   let avg=sum/profile.reviews.length;
+   res.json({error:false,average:avg.toFixed(1)})
+  }
+  catch(e){
+    res.json({error:true,message:"something went wrong."})
+  }
+})
+app.get('/myreviews',async(req,res)=>{
+const {tutorId}=req.query;
+try{
+  const profile=await Profile.findOne({tutorId})
+  let reviewsList=[]
+  for(let i=0;i<profile.reviews.length;i++){
+    let review={};
+    review.stars=profile.reviews[i].stars;
+    review.message=profile.reviews[i].message;
+    const student=await User.findOne({_id:profile.reviews[i].studentId})
+    review.studentName=student.username;
+    reviewsList.push(review)
+  }
+  res.json({error:false,reviews:reviewsList})
+}
+catch(e){
+  res.json({error:true,message:"something went wrong."})
+}
+})
 app.post('/register',async(req,res)=>{
     const user=req.body;
     console.log(user)
