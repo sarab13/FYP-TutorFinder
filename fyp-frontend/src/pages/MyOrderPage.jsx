@@ -34,9 +34,14 @@ const Button = styled.button`
   height: 50px;
   
 `;
+
 export default function MyOrderPage(){
+  const [orderRating,setOrderRating]=useState()
+  const [orderMessage,setOrderMessage]=useState()
+     const [tutorIds,setTutorId]=useState()
+     const [orderIds,setOrderId]=useState()
     const [rating,changeRating]=useState()
-    
+    const [review,setReview]=useState('')
     const currentUser=useSelector((state)=>state.currentUser)
     const [isSubmit,setIsSubmit]=useState(true)
     const [activeOrders,setActiveOrders]=useState([])
@@ -47,12 +52,14 @@ export default function MyOrderPage(){
     const [completedDirectOrders,setCompletedDirectOrders]=useState([])
     const [isComplete,setIsComplete]=useState(false)
     const { isOpen, onOpen, onClose } = useDisclosure()
+    const { isOpen:isOpenReview, onOpen:onOpenReview, onClose:onCloseReview } = useDisclosure()
+
     const finalRef = React.useRef(null)
     
     const getOrders=async()=>{
         const result=await axios.get(`/myorders?userId=${currentUser.user._id}`)
         const result2=await axios.get(`/mydirectorders?userId=${currentUser.user._id}`)
-
+        console.log(result)
         const active=result.data.listOfOrders.filter(function (order){
             return order.orderStatus=="active";
         })
@@ -87,9 +94,14 @@ export default function MyOrderPage(){
     useEffect(()=>{
         getOrders()
     },[])
+    
     const handleComplete=(orderId)=>{
         //setIsComplete(true)
        handleUpdate(orderId,"complete")
+    }
+    const handleIds=(orderId,tutorId)=>{
+      setTutorId(tutorId)
+      setOrderId(orderId)
     }
     const handleUpdate=async(order_id,status)=>{
         const res=await axios.put("/updateorderstatus",{order_id,status})
@@ -123,6 +135,32 @@ export default function MyOrderPage(){
             return order.orderStatus=="complete"
         })
         setCompletedDirectOrders(complete)
+    }
+    const handleReviewMsg=(e)=>{
+        setReview(e.target.value)
+    }
+    const handleReview=async(orderId,tutorId)=>{
+       // e.preventDefault()
+       alert(orderIds+" "+tutorIds)
+        const result=await axios.post('/review',{orderId:orderIds,studentId:currentUser.user._id,tutorId:tutorIds,stars:rating,message:review})
+       console.log(result)
+        if(!result.data.error){
+            alert("success")
+            onClose();
+            const newArray=completedOrders;
+          /*  for(let i=0;i<newArray.length;i++){
+                if(newArray[i].order_id==orderId){
+                    newArray[i].review.stars=rating;
+                    newArray[i].review.message=review;
+                    break;
+                }
+            }
+            setCompletedOrders(newArray)*/
+        }
+    }
+    const handleRatingAndReview=(starss,messagee)=>{
+    setOrderRating(starss)
+    setOrderMessage(messagee)
     }
     return <>
     <StudentNavbar/>
@@ -181,10 +219,57 @@ export default function MyOrderPage(){
         <p className="tutorName">order status: <span>{order.orderStatus}</span></p>
         <p className="tutorName">{order.orderPrice}$</p>
         </div>
-        <Button onClick={()=>setIsSubmit(true)}>leave a review</Button>
-       
+        {order.review?
+        <Button onClick={()=>{onOpen();handleRatingAndReview(order.review.stars,order.review.message)}}>Reviewed: {order.review.stars} Stars</Button>:
+        <Button onClick={()=>{onOpenReview();handleIds(order._id,order.tutorId)}}>leave a review</Button>
+                }
         
- 
+
+        <Modal w={100} finalFocusRef={finalRef} isOpen={isOpen} onClose={onClose}>
+            <ModalOverlay />
+            <ModalContent>
+            <ModalHeader>Your review</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              
+            <StarRatings
+            rating={orderRating}
+            starRatedColor="orange"
+            //changeRating={changeRating}
+            numberOfStars={5}
+            name='rating'
+            disabled
+          />
+            <h4 className='submittedReview'>{orderMessage}</h4>
+            </ModalBody>
+          </ModalContent>
+        </Modal>
+        <Modal finalFocusRef={finalRef} isOpen={isOpenReview} onClose={onCloseReview}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Leave a Review</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            
+          <StarRatings
+          rating={rating}
+          starRatedColor="orange"
+          changeRating={changeRating}
+          numberOfStars={5}
+          name='rating'
+        />
+          <h4 className='reviewlabel'>Write something about tutor...</h4>
+          <textarea value={review} onChange={handleReviewMsg} className='reviewbox' rows={3}  ></textarea>
+          </ModalBody>
+
+          <ModalFooter>
+            <Button colorScheme='blue' mr={3} onClick={onCloseReview}>
+              Close
+            </Button>
+            <Button variant='ghost' onClick={()=>handleReview(order._id,order.tutorId)}>Post Review</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
 
        </div> 
     ))}
@@ -199,33 +284,57 @@ export default function MyOrderPage(){
         <p className="tutorName">order status: <span>{order.orderStatus}</span></p>
         <p className="tutorName">{order.orderPrice}$</p>
         </div>
-        <Button onClick={onOpen}>leave a review</Button>
+        {order.review?
+        <Button onClick={()=>{onOpen();handleRatingAndReview(order.review.stars,order.review.message)}}>Reviewed: {order.review.stars} Stars</Button>:
+        <Button onClick={()=>{onOpenReview();handleIds(order._id,order.tutorId)}}>leave a review</Button>
+                }
        
-        <Modal finalFocusRef={finalRef} isOpen={isOpen} onClose={onClose}>
+       <Modal w={100} finalFocusRef={finalRef} isOpen={isOpen} onClose={onClose}>
+            <ModalOverlay />
+            <ModalContent>
+            <ModalHeader>Your review</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              
+            <StarRatings
+            rating={orderRating}
+            starRatedColor="orange"
+            //changeRating={changeRating}
+            numberOfStars={5}
+            name='rating'
+            disabled
+          />
+            <h4 className='submittedReview'>{orderMessage}</h4>
+            </ModalBody>
+          </ModalContent>
+        </Modal>
+        <Modal finalFocusRef={finalRef} isOpen={isOpenReview} onClose={onCloseReview}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Modal Title</ModalHeader>
+          <ModalHeader>Leave a Review</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             
           <StarRatings
           rating={rating}
-          starRatedColor="blue"
+          starRatedColor="orange"
           changeRating={changeRating}
-          numberOfStars={6}
+          numberOfStars={5}
           name='rating'
         />
-          
+          <h4 className='reviewlabel'>Write something about tutor...</h4>
+          <textarea value={review} onChange={handleReviewMsg} className='reviewbox' rows={3}  ></textarea>
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme='blue' mr={3} onClick={onClose}>
+            <Button colorScheme='blue' mr={3} onClick={onCloseReview}>
               Close
             </Button>
-            <Button variant='ghost'>Secondary Action</Button>
+            <Button variant='ghost' onClick={()=>handleReview(order._id,order.tutorId)}>Post Review</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
+
        </div> 
     ))}
    

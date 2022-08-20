@@ -284,19 +284,21 @@ app.put('/editprofile',upload.single('profileImg'),async(req,res)=>{
 
 })
 app.post('/review', async(req,res)=>{
-  const {tutorId,stars,message}=req.body;
-  console.log(tutorId)
-  if(!tutorId || !stars || !message ){
+  const {tutorId,stars,message,studentId,orderId}=req.body;
+  
+  if(!tutorId || !stars || !message || !studentId || !orderId ){
     res.json({error:true,message:"provide all the details"})
     return
   }
   try{
     let review={
       stars,
-      message
+      message,
+      studentId
     }
     const profile=await Profile.findOne({tutorId})
     await Profile.findByIdAndUpdate({_id:profile._id},{$push:{reviews:review}})
+    await Order.findByIdAndUpdate({_id:orderId},{review:{stars,message}})
     res.json({error:false})
 
   }catch(e){
@@ -636,6 +638,7 @@ app.get('/myorders',async(req,res)=>{
   for(let i=0;i<orders.length;i++){
     let orderDetail={}
     orderDetail._id=orders[i]._id
+    orderDetail.review=orders[i].review;
     const tutor=await User.findOne({_id:orders[i].tutorId})
     orderDetail.tutorId=tutor._id;
     orderDetail.tutorName=tutor.username;

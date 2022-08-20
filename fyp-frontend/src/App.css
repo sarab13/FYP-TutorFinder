@@ -209,3 +209,19 @@ color: red;
   display: inline;
   
 }
+.reviewlabel{
+  margin-top: 10px;
+}
+.reviewbox{
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border: 3px solid gray;
+  outline: none;
+  border-radius: 10px;
+}
+.submittedReview{
+  padding: 12px;
+  margin-top: 10px;
+  width: 100%;
+}

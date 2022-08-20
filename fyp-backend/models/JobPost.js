@@ -1,6 +1,7 @@
 const mongoose=require('mongoose')
 
 const subjectSchema=mongoose.Schema({_id:false,id:Number,name:String})
+
 const jobPostSchema=mongoose.Schema({
     title:String,
     description:String,
@@ -12,7 +13,8 @@ const jobPostSchema=mongoose.Schema({
     show:{
         type:Boolean,
         default:true
-    }
+    },
+     
 })
 
 const JobPost=new mongoose.model('JobPosts',jobPostSchema)

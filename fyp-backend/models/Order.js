@@ -1,4 +1,6 @@
 const mongoose=require('mongoose');
+const reviewSchema=mongoose.Schema({stars:Number,message:String})
+
 const orderSchema=new mongoose.Schema({
     jobId:String,
     studentId:String,
@@ -10,7 +12,10 @@ const orderSchema=new mongoose.Schema({
     status:{
         type:String,
         default:"active"
-    }
+    },
+    review:{
+        type:reviewSchema,
+    default:null}
 
 })
 
