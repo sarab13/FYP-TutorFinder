@@ -74,32 +74,12 @@ const StudentNavbar = () => {
         <Menu1>
 
 
-       <Menu>
-        <MenuButton
-        mx={19}
-        fontSize={22}
-        fontWeight='bold'
-            _expanded={{ bg: '#E2E8F0' }}
-
-        _focus={{outline:'none'}} as={Button} bg="lightgray" rightIcon={<ChevronDownIcon />}>
-              Jobs
-            </MenuButton>  
-            <MenuList p={6}>
-              <MenuItem><Link to='/findjobs'>Find Jobs</Link></MenuItem>
-              <MenuDivider />
-              <MenuItem><Link to='/myproposals'>My Proposals</Link></MenuItem>
-            </MenuList>
-</Menu>
 
 
+    
+        
 
-
-            <MenuItem><Link to='/test'>Manage Orders</Link></MenuItem>
-            <MenuItem><Link to='/chat'>Messages</Link></MenuItem>
-            <MenuItem><Link to='/treviews'>Reviews</Link></MenuItem>
-
-
-            <NotificationCenter className="myCustomClass" appId="6Z6EkKF28O" subscriberId={currentUser.user._id}/> 
+             
             <Menu>
             <MenuButton
         
@@ -123,19 +103,7 @@ const StudentNavbar = () => {
             </MenuButton>  
             <MenuList p={6}>
 
-              <ProfileModal 
-              user={currentUser}
-              >
-             <MenuItem><Link to='/myprofile'> View Profile </Link></MenuItem>
-
-              </ProfileModal>
               
-              
-              
-              <MenuDivider />
-              <MenuItem><Link to='/updateprofile' state={true}> Edit Profile </Link></MenuItem>
-              <MenuDivider />
-
 
               <MenuItem><Link to='/login' onClick={handleLogout}>Logout</Link></MenuItem>
             </MenuList>

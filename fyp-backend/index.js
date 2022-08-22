@@ -233,7 +233,7 @@ app.get('/ispaid',async(req,res)=>{
    res.json({error:true,message:"failure"})
   }
 })
-app.post('/updateprofile', upload.single('profileImg'),async (req, res, next) => {
+app.post('/updateprofile', upload.single('profileImg'),async (req, res) => {
     const url = req.protocol + '://' + req.get('host')
     try{
     const subjects=JSON.parse(req.body.subjects)
@@ -246,7 +246,6 @@ app.post('/updateprofile', upload.single('profileImg'),async (req, res, next) =>
         gender:req.body.gender,
         dob:req.body.dob,
         location:req.body.location,
-        ph_no:req.body.ph_no,
         qualification:req.body.qualification,
         experience:req.body.experience,
         fee:req.body.fee,
@@ -255,7 +254,7 @@ app.post('/updateprofile', upload.single('profileImg'),async (req, res, next) =>
     await profile.save()
     await Profile.updateOne({_id:profile._id},{$push:{subjects:{$each:subjects}}})
 
-    res.json({message:"success",profile})
+    res.json({error:false,message:"success",profile})
 }
 catch(e){
     console.log(e)
@@ -264,24 +263,28 @@ catch(e){
 })
 app.put('/editprofile',upload.single('profileImg'),async(req,res)=>{
   const url = req.protocol + '://' + req.get('host')
-  const {profileId,updatedProfile}=req.body;
+//  const {profileId,updatedProfile}=req.body;
   const subjects=JSON.parse(req.body.subjects)
-
-  const updatedResult=await Profile.findOneAndUpdate({_id:profileId},{
+try{
+  const updatedResult=await Profile.findOneAndUpdate({tutorId:req.body.tutorId},{
     name: req.body.name,
-    profile_pic: url + '/public/' + req.file.filename,
+    profile_pic: req.file?url + '/public/' + req.file.filename:req.body.profileImg,
     description:req.body.description,
     gender:req.body.gender,
     dob:req.body.dob,
     location:req.body.location,
-    ph_no:req.body.ph_no,
     qualification:req.body.qualification,
     experience:req.body.experience,
     fee:req.body.fee,
     tutorId:req.body.tutorId
 
   })
-
+  res.json({error:false,message:"success"})
+}
+catch(e){
+  console.log(e)
+  res.json({error:true,message:"something went wrong."})
+}
 })
 app.post('/review', async(req,res)=>{
   const {tutorId,stars,message,studentId,orderId}=req.body;
@@ -436,7 +439,7 @@ app.post('/myprofile',async(req,res)=>{
  try{
     console.log(tutorId)
   const myProfile=await Profile.findOne({tutorId})
-  res.json({message:"success",myProfile})
+  res.json({error:false,message:"success",myProfile})
 
  }
  catch(e){

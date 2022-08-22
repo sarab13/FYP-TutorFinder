@@ -1,16 +1,19 @@
 
 import React,{useState,useEffect} from 'react'
 import styled from "styled-components"
+import Select from 'react-select'
+import { EducationOptions } from './EducationOptions'
 import axios from 'axios'
 import Multiselect from 'multiselect-react-dropdown';
 import { toggleProfileStatus } from '../redux/actions/action';
 import { useNavigate,Navigate, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
-import PhoneInput from 'react-phone-number-input'
+import PhoneInput,{getCountries} from 'react-phone-number-input'
 import { isPossiblePhoneNumber } from 'react-phone-number-input'
-
-
+import TeacherNavBar from './Teacher/TeacherNavBar'
+import SpecialNavBar from './Teacher/SpecialNavBar'
+import countryList from 'react-select-country-list'
 
 const Logo=styled.h1`
 font-weight: bold;
@@ -48,6 +51,7 @@ text-align: center;
 `
 const Lable=styled.h5`
 font-weight: bold;
+margin-bottom:10px;
 
 `
 const Form=styled.form`
@@ -57,6 +61,8 @@ const Form=styled.form`
 const Input=styled.input`
 flex: 1;
   min-width: 40%;
+  margin-bottom:15px;
+  border-radius:10px;
 
   padding: 10px;
   border: 1px solid gray;
@@ -68,7 +74,7 @@ const TextArea=styled.textarea`
   height: 100px;
   padding: 10px;
   border: 1px solid gray;
-
+  border-radius:10px;
 
 `
 const Button=styled.button`
@@ -87,6 +93,7 @@ cursor: pointer;
 const TeacherProfileForm = () => {
   const currentUser=useSelector((state)=>state.currentUser)
    let location=useLocation()
+   const options = React.useMemo(() => countryList().getData(), [])
   const navigate=useNavigate()
   const dispatch=useDispatch()
   const [profile,setProfile]=useState({
@@ -95,26 +102,58 @@ const TeacherProfileForm = () => {
     description:'',
     gender:'',
     dob:'',
-    location:'',
-    
+    location:'Pakistan',
     qualification:'',
-    experience:'',
+    experience:0,
     fee:0
   })
   const [phoneNo, setPhoneNo] = useState()
 
-  const [uploadedImage,setUploaded] = useState('');
+  const [uploadedImageUrl,setUploadedImageUrl] = useState('');
   const imageUploader = React.useRef(null);
   const [subjects,setSubjects]=useState([])
   const [Error,SetError]=useState("")
-  const [dobError,setDobError]=useState('')
+  const [qualificationDropDown,setQualirficationDropDown]=useState()
+  const [locationDropDown,setLocationDropDown]=useState()
   const [Options,setOptions]=useState([{name: 'Physics', id: 1},{name: 'Computer', id: 2}])
+  const getProfileInfo=async()=>{
+    const result=await axios.post('/myprofile',{tutorId:currentUser.user._id})
+    if(!result.data.error){
+      
+      const {description,dob,experience,fee,gender,location,name,ph_no,profile_pic,qualification,subjects}=result.data.myProfile;
+      let newDOB=new Date(dob)
+      let dobb=newDOB.getFullYear()+'-'+newDOB.getMonth()+'-'+newDOB.getDate();
+       //alert(dobb.toString())
+      setProfile({
+        ...profile,
+        name,
+        description,
+        gender,
+        dob:dobb.toString(),
+        location,
+        qualification,
+        experience,
+        fee,
+        img:profile_pic
+               })
+        setUploadedImageUrl(profile_pic)
+        setSubjects([...subjects])
+        setQualirficationDropDown(EducationOptions.filter(option=>option.value==qualification))
+        setLocationDropDown(options.filter((option)=>option.value==location))
+    }
+  }
+  
   useEffect(() => {
     if(location.state){
-      setProfile({...profile,...location.state})
+        getProfileInfo()
     }
+    
   }, [])
+  const regionNames = new Intl.DisplayNames(
+    ['en'], {type: 'region'}
+  );
   const onSelect=(selectedList, selectedItem) =>{
+    SetError('')
     setSubjects([...selectedList])
 }
   const onRemove=(selectedList, removedItem)=> {
@@ -125,43 +164,33 @@ const TeacherProfileForm = () => {
     setSubjects([...newArray])
 }
   const handleImageUpload = e => {
+    let reader=new FileReader()
+    reader.onloadend = () => {
+      setUploadedImageUrl(reader.result)
+    }
+    reader.readAsDataURL(e.target.files[0])
     setProfile({...profile,img:e.target.files[0]})
   };
 
   const handleChange=(e)=>{
+    SetError('')
    const key=e.target.name;
    const value=e.target.value;
-
-   if(key=="dob"){
-    const date=new Date(value)
-    const difference=2022-date.getFullYear();
-    if(difference<15){
-      setDobError("You must be 15 Years old")
-      
-    }
-    else{
-      setDobError('')
-    }
-    
-  }
    setProfile({...profile,[key]:value})
    
   }
   const handleSubmit=(e)=>{
-
+    alert(profile.img)
     e.preventDefault()
-    if(!profile.name || !profile.qualification || !profile.description || !profile.img || !profile.gender || !profile.dob || !phoneNo || !profile.location){
-      SetError('please enter all data');
+    if(!profile.name || !profile.qualification || !profile.description || !profile.img || !profile.gender || !profile.dob  || !profile.location){
+      SetError('Please fill all the fields.');
       return
     }
-    if(profile.description.length<198){
-      SetError(" Minimum description length should be 200 characters.")
+    if(subjects.length<1){
+      SetError("Please select at least one subject.")
       return
     }
-    if(!isPossiblePhoneNumber(phoneNo)){
-      SetError("phone no is invalid")
-      return
-    }
+    
     const formData=new FormData();
     formData.append('profileImg', profile.img)
     formData.append('name',profile.name)
@@ -169,7 +198,7 @@ const TeacherProfileForm = () => {
     formData.append('gender',profile.gender)
     formData.append('dob',profile.dob)
     formData.append('location',profile.location)
-    formData.append('ph_no',profile.ph_no)
+    //formData.append('ph_no',phoneNo)
     formData.append('qualification',profile.qualification)
     formData.append('experience',profile.experience)
     formData.append('fee',profile.fee)
@@ -178,6 +207,18 @@ const TeacherProfileForm = () => {
   //})
     formData.append('subjects',JSON.stringify(subjects))
     formData.append('tutorId',currentUser.user._id)
+    if(location.state){
+      axios.put("http://localhost:5000/editprofile", formData).then(res => {
+        if(res.data.error){
+          navigate('/myprofile')
+        }
+        else{
+         // dispatch(toggleProfileStatus(true))
+          navigate('/myprofile')
+        }
+    })
+    }
+    else{
     axios.post("http://localhost:5000/updateprofile", formData).then(res => {
         if(res.data.error){
           navigate('/updateprofile')
@@ -188,6 +229,17 @@ const TeacherProfileForm = () => {
         }
     })
   }
+  }
+  
+  const educationHandler=(val)=>{
+    setQualirficationDropDown(val)
+    setProfile({...profile,qualification:val.value})
+  }
+  const changeHandler=(val)=>{
+    setLocationDropDown(val)
+    setProfile({...profile,location:regionNames.of(val.value)})
+    //setProfile({...profile,location:val.value})
+  }
 
   if(!currentUser.isLoggedIn){
     return <Navigate to='/login'/>
@@ -195,23 +247,23 @@ const TeacherProfileForm = () => {
   else
     return (
         <div>
-        
+        {location.state?<TeacherNavBar/>:<SpecialNavBar/>}
         <Title>Enter Your Details </Title>
         <Container>
         <Wrapper>
             <Form>
             
-                <Lable>Profile Pic:</Lable>
-                <input onChange={handleImageUpload} ref={imageUploader} type="file" accept="image/*" multiple = "false" />
-                <div >
-              </div>
-                <Lable>Name</Lable>
-                <Input type="text" name='name' onChange={handleChange} value={profile.name}/>
-                <Lable>Description</Lable>
-                <TextArea name='description' onChange={handleChange} value={profile.description}></TextArea>
-                <Lable>Gender</Lable>
+                <Lable>Profile Pic*:</Lable>
+                {uploadedImageUrl.length>0?<img className='profilepic' src={uploadedImageUrl} alt="dp"></img>:''}
+                <input style={{marginBottom:'15px'}} onChange={handleImageUpload} ref={imageUploader} type="file" accept="image/*" multiple = "false" />
                 
-                <select id="gender" onChange={handleChange} name="gender">
+                <Lable>Full Name*:</Lable>
+                <Input required  maxLength={25} type="text" name='name' onChange={handleChange} value={profile.name}/>
+                <Lable>Profile Description*:</Lable>
+                <TextArea required maxLength={100} name='description' onChange={handleChange} value={profile.description}></TextArea>
+                <Lable>Gender*:</Lable>
+                
+                <select style={{marginBottom:'15px'}} id="gender" value={profile.gender} onChange={handleChange} name="gender">
                 <option value="">Select</option>
 
     <option value="Male">male</option>
@@ -219,12 +271,12 @@ const TeacherProfileForm = () => {
    
   </select>
   
-  <Lable>Date of birth</Lable>
-  <Input type="date" name="dob" onChange={handleChange} value={profile.dob}/>
-  <p>{dobError}</p>
-  <Lable>Location</Lable>
-  <Input type="text" name="location" onChange={handleChange} value={profile.location}/>
-  <Lable>Phone No</Lable>
+  <Lable>Date of birth*:</Lable>
+  <Input type="date" max={'2006-12-31'} defaultValue={profile.dob} name="dob" required onChange={handleChange} value={profile.dob}/>
+  <Lable>Location*:</Lable>
+  <Select  options={options} value={locationDropDown}  onChange={changeHandler} />
+
+  {/*<Lable>Phone No*:</Lable>
   <PhoneInput
   style={{width:"20px"}}
      international
@@ -234,24 +286,26 @@ const TeacherProfileForm = () => {
       placeholder="Enter phone number"
       value={phoneNo}
       onChange={setPhoneNo}
+      onCountryChange={getCountryName}
       defaultCountry="PK"
       />
-  
-  <Lable>Education</Lable>
-  <Input type="text" name="qualification" onChange={handleChange} value={profile.qualification}/>
-  <Lable>Subjects</Lable>
+  */
+    }
+  <Lable style={{marginTop:'15px'}}>Education*:</Lable>
+  <Select id="education"  options={EducationOptions} value={qualificationDropDown}  onChange={educationHandler} />
+  <Lable>Subjects*:</Lable>
                 <Multiselect
                   options={Options} // Options to display in the dropdown
-                  selectedValues={Options[0]} // Preselected value to persist in dropdown
+                  selectedValues={[...subjects]} // Preselected value to persist in dropdown
                  onSelect={onSelect} // Function will trigger on select event
                   onRemove={onRemove} // Function will trigger on remove event
                   displayValue="name" // Property name to display in the dropdown options
                   />
-  <Lable>Teaching Experience</Lable>
-  <Input type="number" name="experience" onChange={handleChange} value={profile.experience}/>
-  <Lable>Fee</Lable>
-  <Input type="number" name="fee" onChange={handleChange} value={profile.fee}/>
-  <p>{Error}</p>
+  <Lable style={{marginTop:'15px'}}>Teaching Experience*:</Lable>
+  <Input type="number" name="experience" min={0} onChange={handleChange} value={profile.experience}/>
+  <Lable>Fee*: (In Dollars)</Lable>
+  <Input type="number" name="fee" min={2} onChange={handleChange} value={profile.fee}/>
+  <p style={{padding:'10px',color:'red',fontSize:'15px'}}>{Error}</p>
   <Button onClick={handleSubmit}>Submit</Button>
                 
             </Form>

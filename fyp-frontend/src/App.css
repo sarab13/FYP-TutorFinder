@@ -202,11 +202,12 @@ color: red;
   width: 100%;
 }
 .PhoneInputCountrySelect{
-  width: 70px;
+  width: 80px;
   display: inline-block;
 }
 .PhoneInputCountryIcon{
-  display: inline;
+  width: 20px;
+  
   
 }
 .reviewlabel{
@@ -248,4 +249,33 @@ color: red;
 .review  div:first-child{
   height: 50%;
   margin-bottom: 7px;
+}
+.PhoneInput{
+  display: flex;
+  align-items: center;
+  
+}
+
+.PhoneInputCountry{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  margin-right: 10px;
+}
+.profilepic{
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+}
+.css-b62m3t-container{
+  width: 40%;
+  margin-bottom: 15px;
+  border-radius: 10px;
+  z-index: 2;
+  
+}
+
+#education{
+  z-index: 1;
 }
