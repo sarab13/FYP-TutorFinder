@@ -3,7 +3,8 @@ import { Navigate, useNavigate } from 'react-router-dom'
 import styled from "styled-components"
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { logoutUser } from '../redux/actions/action'
+import axios from 'axios'
+import { logoutUser ,toggleProfileStatus} from '../redux/actions/action'
 import StudentNavbar from '../components/Student/StudentNavbar'
 
 const Button=styled.button`
@@ -59,7 +60,21 @@ const CreatePost = () => {
     const dispatch=useDispatch()
     const navigate=useNavigate()
     const currentUser=useSelector((state)=>state.currentUser)
-
+    const getResult=async()=>{
+        const body={studentId:currentUser.user._id}
+        const result=await axios.post('/stdcompleteprofile',body)
+        console.log(result.data.isComplete)
+         if(result.data.isComplete){
+            dispatch(toggleProfileStatus(true))
+         }
+         else{
+            navigate('/stdupdateprofile')
+         }
+        
+      }
+    useEffect(()=>{
+     getResult()
+    },[])
     const handleLogout=()=>{
         dispatch(logoutUser())
         navigate('/login')

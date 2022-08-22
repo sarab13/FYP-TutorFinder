@@ -5,6 +5,7 @@ const uuid = require("uuid").v4;
 const mongoose=require('mongoose')
 const User=require('./models/User')
 const Profile=require('./models/TeacherProfile')
+const StudentProfile=require('./models/StudentProfile')
 const TBankDetails=require('./models/TeacherBankDetails')
 const JobPost=require('./models/JobPost')
 const Bid=require('./models/Bid')
@@ -234,6 +235,36 @@ app.get('/ispaid',async(req,res)=>{
    res.json({error:true,message:"failure"})
   }
 })
+app.post('/stdupdateprofile',upload.single('profileImg'),async(req,res)=>{
+  const url = req.protocol + '://' + req.get('host')
+  try{
+  const profile = new StudentProfile({
+      //_id: new mongoose.Types.ObjectId(),
+      name: req.body.name,
+      profile_pic: url + '/public/' + req.file.filename,
+     // description:req.body.description,
+      gender:req.body.gender,
+      dob:req.body.dob,
+      location:req.body.location,
+      qualification:req.body.qualification,
+      //experience:req.body.experience,
+      //fee:req.body.fee,
+      studentId:req.body.studentId
+  });
+  await profile.save()
+  
+  //await Profile.updateOne({_id:profile._id},{$push:{subjects:{$each:subjects}}})
+  const newBankDetails=new TBankDetails({
+    tutorId:req.body.tutorId
+  })
+  await newBankDetails.save()
+  res.json({error:false,message:"success",profile})
+}
+catch(e){
+  console.log(e)
+  res.json({error:true,message:"Something went wrong, Try again."})
+}
+})
 app.post('/updateprofile', upload.single('profileImg'),async (req, res) => {
     const url = req.protocol + '://' + req.get('host')
     try{
@@ -266,6 +297,31 @@ catch(e){
     res.json({error:true,message:"Something went wrong, Try again."})
 }
 })
+app.put('/stdeditprofile',upload.single('profileImg'),async(req,res)=>{
+  const url = req.protocol + '://' + req.get('host')
+//  const {profileId,updatedProfile}=req.body;
+ // const subjects=JSON.parse(req.body.subjects)
+try{
+  const updatedResult=await StudentProfile.findOneAndUpdate({studentId:req.body.studentId},{
+    name: req.body.name,
+    profile_pic: req.file?url + '/public/' + req.file.filename:req.body.profileImg,
+    //description:req.body.description,
+    gender:req.body.gender,
+    dob:req.body.dob,
+    location:req.body.location,
+    qualification:req.body.qualification,
+    //experience:req.body.experience,
+    //fee:req.body.fee,
+    studentId:req.body.studentId
+
+  })
+  res.json({error:false,message:"success"})
+}
+catch(e){
+  console.log(e)
+  res.json({error:true,message:"something went wrong."})
+}
+})
 app.put('/editprofile',upload.single('profileImg'),async(req,res)=>{
   const url = req.protocol + '://' + req.get('host')
 //  const {profileId,updatedProfile}=req.body;
@@ -284,6 +340,8 @@ try{
     tutorId:req.body.tutorId
 
   })
+  await Profile.updateOne({_id:profile._id},{$push:{subjects:{$each:subjects}}})
+
   res.json({error:false,message:"success"})
 }
 catch(e){
@@ -469,6 +527,19 @@ app.post('/createJob',async(req,res)=>{
     res.json({error:true,message:'Something went wrong, Try again'})
 }
 })
+app.post('/stdmyprofile',async(req,res)=>{
+  const studentId=req.body.studentId;
+  try{
+   //  console.log(tutorId)
+   const myProfile=await StudentProfile.findOne({studentId})
+   res.json({error:false,message:"success",myProfile})
+ 
+  }
+  catch(e){
+     res.json({error:true,message:'Something went wrong, Try again'})
+ 
+  }
+ })
 app.post('/myprofile',async(req,res)=>{
  const tutorId=req.body.tutorId;
  try{
@@ -482,7 +553,22 @@ app.post('/myprofile',async(req,res)=>{
 
  }
 })
+app.post('/stdcompleteprofile',async(req,res)=>{
+  const studentId=req.body.studentId;
+  try{
+  const existsProfile=await StudentProfile.findOne({studentId})
+  if(existsProfile){
+    res.json({message:"success",isComplete:true})
+ }
+ else{
+    res.json({message:"failure",isComplete:false})
 
+ }
+  }
+  catch(e){
+    res.json({error:true,message:"something went wrong."})
+  }
+})
 app.post('/completeprofile',async(req,res)=>{
     const tutorId=req.body.tutorId;
     console.log(tutorId)

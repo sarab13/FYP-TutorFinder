@@ -75,9 +75,9 @@ const TeacherNavbar = () => {
         console.log('calling')
       }
     }
-    useEffect(()=>{
-    getProfileInfo()
-    },[currentUser])
+   // useEffect(()=>{
+    //getProfileInfo()
+    //},[currentUser])
     const handleLogout=()=>{
         dispatch(logoutUser())
         navigate('/login')

@@ -3,7 +3,7 @@ import { Link,useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import NotificationCenter from 'react-notification-center-component';
 import { Avatar } from "@chakra-ui/avatar";
-import ProfileModal from "../miscellaneous/ProfileModal";
+import ProfileModal from "./StudentProfileModal";
 import { logoutUser } from '../../redux/actions/action';
 import {  useDispatch} from "react-redux";
 
@@ -128,8 +128,9 @@ const StudentNavbar = () => {
 
               </ProfileModal>
               
-              
-              
+              <MenuDivider/>
+              <MenuItem><Link to='/stdupdateprofile' state={true}>Edit Profile</Link></MenuItem>
+
               <MenuDivider />
               <MenuItem><Link to='/login' onClick={handleLogout}>Logout</Link></MenuItem>
             </MenuList>

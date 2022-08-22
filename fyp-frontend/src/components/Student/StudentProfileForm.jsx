@@ -5,14 +5,14 @@ import Select from 'react-select'
 import { EducationOptions } from './EducationOptions'
 import axios from 'axios'
 import Multiselect from 'multiselect-react-dropdown';
-import { toggleProfileStatus,setDP } from '../redux/actions/action';
+import { toggleProfileStatus,setDP } from '../../redux/actions/action';
 import { useNavigate,Navigate, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import PhoneInput,{getCountries} from 'react-phone-number-input'
 import { isPossiblePhoneNumber } from 'react-phone-number-input'
-import TeacherNavBar from './Teacher/TeacherNavBar'
-import SpecialNavBar from './Teacher/SpecialNavBar'
+import StudentNavBar from './StudentNavbar'
+import SpecialNavBar from '../Teacher/SpecialNavBar'
 import countryList from 'react-select-country-list'
 
 const Logo=styled.h1`
@@ -90,7 +90,7 @@ cursor: pointer;
 
 
 
-const TeacherProfileForm = () => {
+const StudentProfileForm = () => {
   const currentUser=useSelector((state)=>state.currentUser)
    let location=useLocation()
    const options = React.useMemo(() => countryList().getData(), [])
@@ -117,27 +117,27 @@ const TeacherProfileForm = () => {
   const [locationDropDown,setLocationDropDown]=useState()
   const [Options,setOptions]=useState([{name: 'Physics', id: 1},{name: 'Computer', id: 2}])
   const getProfileInfo=async()=>{
-    const result=await axios.post('/myprofile',{tutorId:currentUser.user._id})
+    const result=await axios.post('/stdmyprofile',{studentId:currentUser.user._id})
     if(!result.data.error){
       
-      const {description,dob,experience,fee,gender,location,name,ph_no,profile_pic,qualification,subjects}=result.data.myProfile;
+      const {dob,gender,location,name,profile_pic,qualification}=result.data.myProfile;
       let newDOB=new Date(dob)
       let dobb=newDOB.getFullYear()+'-'+newDOB.getMonth()+'-'+newDOB.getDate();
        //alert(dobb.toString())
       setProfile({
         ...profile,
         name,
-        description,
+       // description,
         gender,
         dob:dobb.toString(),
         location,
         qualification,
-        experience,
-        fee,
+       // experience,
+        //fee,
         img:profile_pic
                })
         setUploadedImageUrl(profile_pic)
-        setSubjects([...subjects])
+      //  setSubjects([...subjects])
         setQualirficationDropDown(EducationOptions.filter(option=>option.value==qualification))
         setLocationDropDown(options.filter((option)=>option.label==location))
     }
@@ -182,33 +182,30 @@ const TeacherProfileForm = () => {
   const handleSubmit=(e)=>{
     alert(profile.img)
     e.preventDefault()
-    if(!profile.name || !profile.qualification || !profile.description || !profile.img || !profile.gender || !profile.dob  || !profile.location){
+    if(!profile.name || !profile.qualification  || !profile.img || !profile.gender || !profile.dob  || !profile.location){
       SetError('Please fill all the fields.');
       return
     }
-    if(subjects.length<1){
-      SetError("Please select at least one subject.")
-      return
-    }
+    
     
     const formData=new FormData();
     formData.append('profileImg', profile.img)
     formData.append('name',profile.name)
-    formData.append('description',profile.description)
+    //formData.append('description',profile.description)
     formData.append('gender',profile.gender)
     formData.append('dob',profile.dob)
     formData.append('location',profile.location)
     //formData.append('ph_no',phoneNo)
     formData.append('qualification',profile.qualification)
-    formData.append('experience',profile.experience)
-    formData.append('fee',profile.fee)
+    //formData.append('experience',profile.experience)
+    //formData.append('fee',profile.fee)
     //subjects.forEach(function (element) {
       //data.append('subjects[][item]', element.item);
   //})
-    formData.append('subjects',JSON.stringify(subjects))
-    formData.append('tutorId',currentUser.user._id)
+    //formData.append('subjects',JSON.stringify(subjects))
+    formData.append('studentId',currentUser.user._id)
     if(location.state){
-      axios.put("http://localhost:5000/editprofile", formData).then(res => {
+      axios.put("http://localhost:5000/stdeditprofile", formData).then(res => {
         if(res.data.error){
           navigate('/myprofile')
         }
@@ -216,21 +213,21 @@ const TeacherProfileForm = () => {
          // dispatch(toggleProfileStatus(true))
          currentUser.user.profile_pic=uploadedImageUrl;
          dispatch(setDP(currentUser.user))
-          navigate('/myprofile')
+          navigate('/createjob')
         }
     })
     }
     else{
-    axios.post("http://localhost:5000/updateprofile", formData).then(res => {
+    axios.post("http://localhost:5000/stdupdateprofile", formData).then(res => {
         if(res.data.error){
-          navigate('/updateprofile')
+          navigate('/stdupdateprofile')
         }
         else{
           dispatch(toggleProfileStatus(true))
           currentUser.user.profile_pic=uploadedImageUrl;
           dispatch(setDP(currentUser.user))
 
-          navigate('/myprofile')
+          navigate('/createjob')
         }
     })
   }
@@ -252,7 +249,7 @@ const TeacherProfileForm = () => {
   else
     return (
         <div>
-        {location.state?<TeacherNavBar/>:<SpecialNavBar/>}
+        {location.state?<StudentNavBar/>:<SpecialNavBar/>}
         <Title>Enter Your Details </Title>
         <Container>
         <Wrapper>
@@ -264,9 +261,9 @@ const TeacherProfileForm = () => {
                 
                 <Lable>Full Name*:</Lable>
                 <Input required  maxLength={25} type="text" name='name' onChange={handleChange} value={profile.name}/>
-                <Lable>Profile Description*:</Lable>
-                <TextArea required maxLength={100} name='description' onChange={handleChange} value={profile.description}></TextArea>
-                <Lable>Gender*:</Lable>
+             {//   <Lable>Profile Description*:</Lable>
+                //<TextArea required maxLength={100} name='description' onChange={handleChange} value={profile.description}></TextArea>
+             }<Lable>Gender*:</Lable>
                 
                 <select style={{marginBottom:'15px'}} id="gender" value={profile.gender} onChange={handleChange} name="gender">
                 <option value="">Select</option>
@@ -298,19 +295,19 @@ const TeacherProfileForm = () => {
     }
   <Lable style={{marginTop:'15px'}}>Education*:</Lable>
   <Select id="education"  options={EducationOptions} value={qualificationDropDown}  onChange={educationHandler} />
-  <Lable>Subjects*:</Lable>
-                <Multiselect
-                  options={Options} // Options to display in the dropdown
-                  selectedValues={[...subjects]} // Preselected value to persist in dropdown
-                 onSelect={onSelect} // Function will trigger on select event
-                  onRemove={onRemove} // Function will trigger on remove event
-                  displayValue="name" // Property name to display in the dropdown options
-                  />
-  <Lable style={{marginTop:'15px'}}>Teaching Experience*:</Lable>
-  <Input type="number" name="experience" min={0} onChange={handleChange} value={profile.experience}/>
-  <Lable>Fee*: (In Dollars)</Lable>
-  <Input type="number" name="fee" min={2} onChange={handleChange} value={profile.fee}/>
-  <p style={{padding:'10px',color:'red',fontSize:'15px'}}>{Error}</p>
+  {//<Lable>Subjects*:</Lable>
+     //           <Multiselect
+       //           options={Options} // Options to display in the dropdown
+         //         selectedValues={[...subjects]} // Preselected value to persist in dropdown
+           //      onSelect={onSelect} // Function will trigger on select event
+             //     onRemove={onRemove} // Function will trigger on remove event
+               //   displayValue="name" // Property name to display in the dropdown options
+                 // />
+ // <Lable style={{marginTop:'15px'}}>Teaching Experience*:</Lable>
+  //</Wrapper>Input type="number" name="experience" min={0} onChange={handleChange} value={profile.experience}/>
+  //</Container>/<Lable>Fee*: (In Dollars)</Lable>
+  //</div><Input type="number" name="fee" min={2} onChange={handleChange} value={profile.fee}/>
+  }<p style={{padding:'10px',color:'red',fontSize:'15px'}}>{Error}</p>
   <Button onClick={handleSubmit}>Submit</Button>
                 
             </Form>
@@ -323,4 +320,4 @@ const TeacherProfileForm = () => {
     )
 }
 
-export default TeacherProfileForm
+export default StudentProfileForm

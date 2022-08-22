@@ -28,6 +28,7 @@ import SearchTutors from './components/SearchTutors';
 import DirectOrder from './pages/DirectOrder.jsx'
 import DetailedTeacherView from './components/DetailedTeacherView'
 import MyProposals from './components/Teacher/MyProposals'
+import StudentProfileForm from './components/Student/StudentProfileForm'
 const App = () => {
   const currentUser=useSelector((state)=>state.currentUser)
   const [selectedChat, setSelectedChat] = useState();
@@ -68,7 +69,7 @@ const App = () => {
   <Route exact path='/myproposals' element={<MyProposals/>}/>
   <Route exact path='/treviews' element={<Reviews/>}/>
   <Route exact path='/taccountdetails' element={<BankDetailsForm/>}/>
-
+  <Route exact path='/stdupdateprofile' element={<StudentProfileForm/>}/>
   
 </Routes>
 </ChatContext.Provider>
