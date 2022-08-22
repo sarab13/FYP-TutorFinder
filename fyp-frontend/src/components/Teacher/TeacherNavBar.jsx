@@ -1,11 +1,13 @@
+import React, {useState,useEffect} from 'react'
 import styled from "styled-components"
 import { Link,useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import NotificationCenter from 'react-notification-center-component';
 import { Avatar } from "@chakra-ui/avatar";
 import ProfileModal from "../miscellaneous/ProfileModal";
-import { logoutUser } from '../../redux/actions/action';
+import { logoutUser,setDP } from '../../redux/actions/action';
 import {  useDispatch} from "react-redux";
+import axios from 'axios'
 
 
 import {
@@ -58,14 +60,30 @@ font-weight: bold;
 `
 
 
-const StudentNavbar = () => {
+const TeacherNavbar = () => {
     const dispatch=useDispatch();
     const navigate=useNavigate();
+    const [profile,setProfile]=useState({img:''})
     const currentUser=useSelector((state)=>state.currentUser)
+    const getProfileInfo=async()=>{
+      const result=await axios.post('/myprofile',{tutorId:currentUser.user._id})
+      console.log(result)
+      if(!result.data.error){
+        //setProfile({img:result.data.myProfile.profile_pic})
+        currentUser.user.profile_pic=result.data.myProfile.profile_pic
+        dispatch(setDP(currentUser.user))
+        console.log('calling')
+      }
+    }
+    useEffect(()=>{
+    getProfileInfo()
+    },[currentUser])
     const handleLogout=()=>{
         dispatch(logoutUser())
         navigate('/login')
     }
+
+    
     return (
         <Container>
         <Wrapper>
@@ -117,8 +135,8 @@ const StudentNavbar = () => {
                 
                 
                 //name={user.name}
-                //src={user.pic}
-              />
+                src={currentUser.user.profile_pic}
+               />
             
             </MenuButton>  
             <MenuList p={6}>
@@ -154,4 +172,4 @@ const StudentNavbar = () => {
     )
 }
 
-export default StudentNavbar
+export default TeacherNavbar

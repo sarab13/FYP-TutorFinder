@@ -22,7 +22,10 @@ import { LOGOUT, SIGNIN } from '../actionTypes/types';
               return {
                   isLoggedIn:false,user:{}
               }
-           
+            case 'SETDP':
+              return{
+                ...state,user:action.payload
+              }
              default: return state;
 
         }

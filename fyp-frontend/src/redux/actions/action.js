@@ -11,7 +11,13 @@ import { TOGGLE_COMPLETE_PROFILE } from '../actionTypes/types';
         };
 
     };
-
+    
+    export const setDP=(user)=>{
+        return{
+            type:'SETDP',
+            payload:user
+        }
+    }
     export const toggleProfileStatus=(status)=>{
         return {
             type:TOGGLE_COMPLETE_PROFILE,
