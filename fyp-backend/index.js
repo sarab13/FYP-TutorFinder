@@ -5,6 +5,7 @@ const uuid = require("uuid").v4;
 const mongoose=require('mongoose')
 const User=require('./models/User')
 const Profile=require('./models/TeacherProfile')
+const TBankDetails=require('./models/TeacherBankDetails')
 const JobPost=require('./models/JobPost')
 const Bid=require('./models/Bid')
 const Order=require('./models/Order')
@@ -252,8 +253,12 @@ app.post('/updateprofile', upload.single('profileImg'),async (req, res) => {
         tutorId:req.body.tutorId
     });
     await profile.save()
+    
     await Profile.updateOne({_id:profile._id},{$push:{subjects:{$each:subjects}}})
-
+    const newBankDetails=new TBankDetails({
+      tutorId:req.body.tutorId
+    })
+    await newBankDetails.save()
     res.json({error:false,message:"success",profile})
 }
 catch(e){
@@ -285,6 +290,36 @@ catch(e){
   console.log(e)
   res.json({error:true,message:"something went wrong."})
 }
+})
+
+app.put('/tbankdetails',async(req,res)=>{
+  const {tutorId,bankname,accountNo,routingNo,phoneNo,extraDetails}=req.body;
+  try{
+   const Detail=await TBankDetails.findOne({tutorId})
+   await TBankDetails.findByIdAndUpdate({_id:Detail._id},{
+    bankname,
+    accountNo,
+    routingNo,
+    phoneNo,
+    extraDetails,
+    tutorId
+   })
+   res.json({error:false,message:"success"})
+
+  }
+  catch(e){
+    res.json({error:true,message:"something went wrong."})
+  }
+})
+app.get('/tbankdetails',async(req,res)=>{
+  const {tutorId}=req.query;
+  try{
+  const Detail= await TBankDetails.findOne({tutorId})
+  res.json({error:false,Detail})
+  }
+  catch(e){
+    res.json({error:true,message:"something went wrong."})
+  }
 })
 app.post('/review', async(req,res)=>{
   const {tutorId,stars,message,studentId,orderId}=req.body;

@@ -136,6 +136,9 @@ const StudentNavbar = () => {
               <MenuItem><Link to='/updateprofile' state={true}> Edit Profile </Link></MenuItem>
               <MenuDivider />
 
+              <MenuItem><Link to='/taccountdetails' > Bank Details </Link></MenuItem>
+
+              <MenuDivider />
 
               <MenuItem><Link to='/login' onClick={handleLogout}>Logout</Link></MenuItem>
             </MenuList>
