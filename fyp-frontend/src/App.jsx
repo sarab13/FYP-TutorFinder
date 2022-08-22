@@ -20,6 +20,7 @@ import Reviews from './components/Teacher/Reviews'
 import { ChatContext } from './Context/ChatProvider';
 import { useSelector } from 'react-redux';
 import BankDetailsForm from './components/Teacher/BankDetailsForm'
+import SBankDetailsForm from './components/Student/BankDetailsForm'
 import OrderCreationForm from './pages/OrderCreationForm';
 import RegisterPage from './pages/RegisterPage'
 import MyOrders from './pages/MyOrders';
@@ -69,6 +70,8 @@ const App = () => {
   <Route exact path='/myproposals' element={<MyProposals/>}/>
   <Route exact path='/treviews' element={<Reviews/>}/>
   <Route exact path='/taccountdetails' element={<BankDetailsForm/>}/>
+  <Route exact path='/saccountdetails' element={<SBankDetailsForm/>}/>
+
   <Route exact path='/stdupdateprofile' element={<StudentProfileForm/>}/>
   
 </Routes>

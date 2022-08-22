@@ -115,7 +115,7 @@ const StudentNavbar = () => {
                 
                 
                 //name={user.name}
-                //src={user.pic}
+                src={currentUser.user.profile_pic}
               />
             
             </MenuButton>  
@@ -132,6 +132,9 @@ const StudentNavbar = () => {
               <MenuItem><Link to='/stdupdateprofile' state={true}>Edit Profile</Link></MenuItem>
 
               <MenuDivider />
+              <MenuItem><Link to='/saccountdetails' >Bank Details</Link></MenuItem>
+              <MenuDivider />
+
               <MenuItem><Link to='/login' onClick={handleLogout}>Logout</Link></MenuItem>
             </MenuList>
             </Menu>             

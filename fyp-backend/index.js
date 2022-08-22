@@ -7,6 +7,7 @@ const User=require('./models/User')
 const Profile=require('./models/TeacherProfile')
 const StudentProfile=require('./models/StudentProfile')
 const TBankDetails=require('./models/TeacherBankDetails')
+const SBankDetails=require('./models/StudentBankDetails')
 const JobPost=require('./models/JobPost')
 const Bid=require('./models/Bid')
 const Order=require('./models/Order')
@@ -254,8 +255,9 @@ app.post('/stdupdateprofile',upload.single('profileImg'),async(req,res)=>{
   await profile.save()
   
   //await Profile.updateOne({_id:profile._id},{$push:{subjects:{$each:subjects}}})
-  const newBankDetails=new TBankDetails({
-    tutorId:req.body.tutorId
+  
+  const newBankDetails=new SBankDetails({
+    studentId:req.body.studentId
   })
   await newBankDetails.save()
   res.json({error:false,message:"success",profile})
@@ -369,10 +371,39 @@ app.put('/tbankdetails',async(req,res)=>{
     res.json({error:true,message:"something went wrong."})
   }
 })
+app.put('/sbankdetails',async(req,res)=>{
+  const {studentId,bankname,accountNo,routingNo,phoneNo,extraDetails}=req.body;
+  try{
+   const Detail=await SBankDetails.findOne({studentId})
+   await SBankDetails.findByIdAndUpdate({_id:Detail._id},{
+    bankname,
+    accountNo,
+    routingNo,
+    phoneNo,
+    extraDetails,
+    studentId
+   })
+   res.json({error:false,message:"success"})
+
+  }
+  catch(e){
+    res.json({error:true,message:"something went wrong."})
+  }
+})
 app.get('/tbankdetails',async(req,res)=>{
   const {tutorId}=req.query;
   try{
   const Detail= await TBankDetails.findOne({tutorId})
+  res.json({error:false,Detail})
+  }
+  catch(e){
+    res.json({error:true,message:"something went wrong."})
+  }
+})
+app.get('/sbankdetails',async(req,res)=>{
+  const {studentId}=req.query;
+  try{
+  const Detail= await SBankDetails.findOne({studentId})
   res.json({error:false,Detail})
   }
   catch(e){
