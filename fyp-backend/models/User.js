@@ -13,7 +13,12 @@ const userSchema=new mongoose.Schema({
     },
     role:{
         type:String
+    },
+    accountStatus:{
+        type:Boolean,
+        default:true,
     }
+
 
 })
 

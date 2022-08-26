@@ -16,6 +16,7 @@ import{BsCurrencyDollar ,BsGenderAmbiguous} from "react-icons/bs"
 import{MdPostAdd} from "react-icons/md"
 import{GiLevelThree} from "react-icons/gi"
 import{CgProfile} from "react-icons/cg"
+import StudentNavbar from './Student/StudentNavbar'
 
 
 
@@ -56,7 +57,7 @@ font-weight: bold;
 `
 const Button=styled.button`
 border: 2px solid ;
-padding: 10px 15px;
+
 margin-left: 10px;
 margin-top: 10px;
 background-color: crimson;
@@ -64,6 +65,8 @@ color: white;
 font-weight: bold;
 border-radius: 10px;
 cursor: pointer;
+width: 100px;
+height: 50px;
 `
 const BottomContainer=styled.div`
 
@@ -260,24 +263,7 @@ export default function MyPost() {
    
   return (
     <div>
-     <Container>
-            <Wrapper>
-            <Left>
-            <Logo>Tutor Finder</Logo>
-            <Menu>
-                <MenuItem>Dashboard</MenuItem>
-               <MenuItem><Link to='/findjobs'>Find jobs</Link> </MenuItem> 
-               <MenuItem><Link to='/myprofile'>View Profile</Link>  </MenuItem>  
-                
-
-            </Menu>
-            
-            </Left>
-            
-            
-            
-            </Wrapper>
-        </Container>
+    <StudentNavbar/>
     <div className='bodyContainer'>
     <Leftcontainer>
    {/* <div className='left'>
@@ -336,15 +322,16 @@ export default function MyPost() {
             ---------------------------------------------------------------------------------------
            {proposalslist.map((proposal)=><div className='box'>
             <div className='header'>
-                  <h3>{proposal.name}</h3>
-                  <h5>{proposal.price}$</h5>
+                  <h3><span className="text"> Name:</span>{proposal.name}</h3>
+                  <h5><span className="text">bidding Price:</span>{proposal.price}$</h5>
             </div>
             <div className='footer'>
                   <p>{proposal.message}</p>
             </div>
-           <p>{proposal.tutorId}</p>
-            <Link to='/chat' state={proposal.tutorId}>Message Now</Link>
-            <Link to='/createorder' state={[post,proposal]}>Order Now</Link>
+            <Row>
+           <Button><Link to='/chat' state={proposal.tutorId}>Message Now</Link></Button> 
+            <Button><Link to='/createorder' state={[post,proposal]}>Order Now</Link> </Button>
+            </Row>
             </div>
            )}
            

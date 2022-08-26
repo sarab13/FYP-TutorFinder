@@ -529,6 +529,10 @@ app.post('/login',async(req,res)=>{
     else{
         const correctPassword=await bcrypt.compare(password,user.password);
         if(correctPassword){
+          if(!user.accountStatus){
+            res.json({error:true,message:"Your account is temporarily block"})
+            return
+          }
             const token=jwt.sign({_id:user._id},'mysecretstring')
             res.cookie('token',token)
             res.json({message:"Login Successfully",user})
@@ -636,6 +640,39 @@ app.post('/myposts/:id',async(req,res)=>{
 const auth=(req,res,next)=>{
 
 }
+
+app.get('/users',async(req,res)=>{
+  try{
+    const Users=await User.find({})
+    res.json({error:false,Users})
+
+
+  }catch(e){
+    res.json({error:true,message:"Something went wrong"})
+
+  }
+
+  
+})
+app.post('/toggleaccountstatus',async(req,res)=>{
+  const {userId}=req.body;
+  try{
+  const user=await User.findById({_id:userId})
+  await User.findByIdAndUpdate({_id:userId},{accountStatus:!user.accountStatus})
+  res.json({error:false,message:"success"})
+  }catch(e){
+  res.json({error:true})
+  }
+})
+app.post('/deleteaccountstatus',async(req,res)=>{
+  const {userId}=req.body;
+  try{
+  await User.findByIdAndDelete({_id:userId})
+  res.json({error:false,message:"success"})
+  }catch(e){
+  res.json({error:true})
+  }
+})
 
 app.post('/latest_posts',async(req,res)=>{
     const tutorId=req.body.tutorId;

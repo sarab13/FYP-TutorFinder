@@ -30,6 +30,8 @@ import DirectOrder from './pages/DirectOrder.jsx'
 import DetailedTeacherView from './components/DetailedTeacherView'
 import MyProposals from './components/Teacher/MyProposals'
 import StudentProfileForm from './components/Student/StudentProfileForm'
+import WidgetLg from './components/Admin/WidgetLg'
+import Sidebar from './components/Admin/sidebar/Sidebar';
 const App = () => {
   const currentUser=useSelector((state)=>state.currentUser)
   const [selectedChat, setSelectedChat] = useState();
@@ -73,6 +75,10 @@ const App = () => {
   <Route exact path='/saccountdetails' element={<SBankDetailsForm/>}/>
 
   <Route exact path='/stdupdateprofile' element={<StudentProfileForm/>}/>
+  <Route  exact path='/admin' element={<WidgetLg/>}/>
+  <Route  exact path='/sidebar' element={<Sidebar/>}/>
+
+
   
 </Routes>
 </ChatContext.Provider>
