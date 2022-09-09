@@ -642,9 +642,33 @@ const auth=(req,res,next)=>{
 }
 
 app.get('/users',async(req,res)=>{
-  try{
-    const Users=await User.find({})
-    res.json({error:false,Users})
+  console.log(req.query.role)
+const {role}=req.query;
+
+  try{   
+    let UsersList=[]
+    const Users=await User.find({role})
+    for(let i=0;i<Users.length;i++){
+      let UserObject={}
+    let profile;
+    if(Users[i].role=='TEACHER')
+    profile=await Profile.findOne({tutorId:Users[i]._id})
+    else{
+      console.log(Users[i]._id)
+    profile=await StudentProfile.findOne({studentId:Users[i]._id})
+    console.log("hi g")
+    console.log(profile)
+    }
+    UserObject.name=profile.name;
+    UserObject.imgUrl=profile.profile_pic;
+    UserObject.accountStatus=Users[i].accountStatus;
+    UserObject._id=Users[i]._id;
+
+    UsersList.push(UserObject)
+
+    }
+    console.log(UsersList)
+    res.json({error:false,Users:UsersList})
 
 
   }catch(e){
@@ -664,6 +688,37 @@ app.post('/toggleaccountstatus',async(req,res)=>{
   res.json({error:true})
   }
 })
+app.get('/ordersinfo',async(req,res)=>{
+try{
+
+  const orders=await Order.find();
+  const directorders=await DirectOrder.find();
+  const Orders=[...orders,...directorders]
+  const completedOrders=Orders.filter((order)=>order.status==="complete")
+  const activeOrders=Orders.filter((order)=>order.status==="active")
+  const cancelledOrders=Orders.filter((order)=>order.status==="cancelled")
+  let OrdersObject={active:{},complete:{},cancel:{}}
+  OrdersObject.active.count=activeOrders.length;
+  OrdersObject.complete.count=completedOrders.length;
+  OrdersObject.cancel.count=cancelledOrders.length;
+  OrdersObject.active.priceTotal = activeOrders.reduce((accum,order) => accum + order.price ,0)
+  OrdersObject.complete.priceTotal = completedOrders.reduce((accum,order) => accum + order.price ,0)
+  OrdersObject.cancel.priceTotal = cancelledOrders.reduce((accum,order) => accum + order.price ,0)
+
+ res.json({error:false,ordersInfo:OrdersObject})
+
+  
+
+
+
+
+
+}catch(e){
+res.json({error:true,message:"Something went wrong."})
+}
+
+
+})
 app.post('/deleteaccountstatus',async(req,res)=>{
   const {userId}=req.body;
   try{
@@ -673,6 +728,7 @@ app.post('/deleteaccountstatus',async(req,res)=>{
   res.json({error:true})
   }
 })
+
 
 app.post('/latest_posts',async(req,res)=>{
     const tutorId=req.body.tutorId;

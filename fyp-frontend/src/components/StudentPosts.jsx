@@ -145,7 +145,12 @@ width: 40%;
 
 padding: 20px;
   margin-left: 20px;
-  background-color: #f0c0c5;
+  border: 1px solid;
+  
+  
+  -webkit-box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+    box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+    
   margin-bottom: 20px;
   border-radius: 20px;
 

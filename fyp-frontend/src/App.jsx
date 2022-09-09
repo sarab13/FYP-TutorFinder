@@ -32,6 +32,9 @@ import MyProposals from './components/Teacher/MyProposals'
 import StudentProfileForm from './components/Student/StudentProfileForm'
 import WidgetLg from './components/Admin/WidgetLg'
 import Sidebar from './components/Admin/sidebar/Sidebar';
+import AdminHomePage from './pages/AdminHomePage';
+import Users from './components/Admin/Users';
+import Orders from './components/Admin/Orders/Orders'
 const App = () => {
   const currentUser=useSelector((state)=>state.currentUser)
   const [selectedChat, setSelectedChat] = useState();
@@ -75,8 +78,12 @@ const App = () => {
   <Route exact path='/saccountdetails' element={<SBankDetailsForm/>}/>
 
   <Route exact path='/stdupdateprofile' element={<StudentProfileForm/>}/>
-  <Route  exact path='/admin' element={<WidgetLg/>}/>
+  <Route  exact path='/admin' element={<AdminHomePage/>}/>
   <Route  exact path='/sidebar' element={<Sidebar/>}/>
+  <Route  exact path='/users' element={<Users/>}/>
+  <Route  exact path='/orders' element={<Orders/>}/>
+
+
 
 
   
