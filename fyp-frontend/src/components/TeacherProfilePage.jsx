@@ -189,8 +189,8 @@ const TeacherProfilePage = () => {
 
         {currentUser.user.role=="STUDENT"?
         <div>
-            <Link to='/chat' state={location.state._id}>Message Now</Link>
-            <Link to='/directorder' state={location.state}>Order Now</Link>
+           <Button><Link to='/chat' state={location.state._id}>Message Now</Link> </Button> 
+            <Button><Link to='/directorder' state={location.state}>Order Now</Link></Button>
         </div>:''
         }
         <Image src={profile.profile_pic} alt="profile" />

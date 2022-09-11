@@ -1,6 +1,8 @@
 import './orders.css'
 import React,{useState,useEffect} from 'react'
 import { ArrowDownward, ArrowUpward } from "@material-ui/icons";
+import styled from "styled-components"
+
 import  AdminNavbar from '../AdminNavbar';
 import axios from 'axios'
 import { useDisclosure } from '@chakra-ui/react';
@@ -15,6 +17,13 @@ import {
   ModalCloseButton,
 } from '@chakra-ui/react'
 
+const Container=styled.div`
+height: 30px;
+background-color: lightgrey;
+padding: 4px;
+border-radius: 5px;
+
+`
 function Orders() {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [pendingPayments,setPendingPayments]=useState([])
@@ -129,16 +138,16 @@ if(!result.data.error){
           <ModalHeader>Bank Details</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <h1>Bank Name:</h1>
-            <h3>{detail.bankDetail.bankname}</h3>
-            <h1>Account No::</h1>
-            <h3>{detail.bankDetail.accountNo}</h3>
-            <h1>Routing No:</h1>
-            <h3>{detail.bankDetail.routingNo}</h3>
-            <h1>Phone No:</h1>
-            <h3>{detail.bankDetail.phoneNo}</h3>
-            <h1>Extra Details:</h1>
-            <h3>{detail.bankDetail.extraDetails}</h3>
+            <h1 className='BankDetails'>Bank Name:</h1>
+            <Container><h3 className='BankDetails1'>{detail.bankDetail.bankname}</h3></Container>
+            <h1 className='BankDetails'>Account No::</h1>
+           <Container> <h3 className='BankDetails1'>{detail.bankDetail.accountNo}</h3></Container>
+            <h1 className='BankDetails'>Routing No:</h1>
+           <Container><h3 className='BankDetails1'>{detail.bankDetail.routingNo}</h3></Container> 
+            <h1 className='BankDetails'>Phone No:</h1>
+           <Container><h3 className='BankDetails1'>{detail.bankDetail.phoneNo}</h3></Container> 
+            <h1 className='BankDetails'>Extra Details:</h1>
+            <Container><h3 className='BankDetails1'>{detail.bankDetail.extraDetails}</h3></Container>
 
           </ModalBody>
 

@@ -158,9 +158,9 @@ export default function OrderCreationForm() {
  
     return (
     <>
-    <StudentNavbar/>
+    
     <div className='orderDetails'>
-    <Title>Order Details</Title>
+    <StudentNavbar/>
     <Container>
     <Wrapper>
     
