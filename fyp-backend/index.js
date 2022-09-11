@@ -672,6 +672,7 @@ const {role}=req.query;
 
 
   }catch(e){
+    console.log(e)
     res.json({error:true,message:"Something went wrong"})
 
   }
@@ -686,6 +687,56 @@ app.post('/toggleaccountstatus',async(req,res)=>{
   res.json({error:false,message:"success"})
   }catch(e){
   res.json({error:true})
+  }
+})
+
+app.get('/pendingpayments',async(req,res)=>{
+  try{
+    const orders=await Order.find().where('status').in(['complete','cancelled']).where('transfer').in([false])
+    const directorders=await DirectOrder.find().where('status').in(['complete','cancelled']).where('transfer').in([false])
+    let TotalOrders=[...orders,...directorders]
+    let finalArray=[]
+    for(let i=0;i<TotalOrders.length;i++){
+      let OrderObject={}
+      if(TotalOrders[i].status==='cancelled'){
+        let bankDetail=await SBankDetails.findOne({studentId:TotalOrders[i].studentId})
+        let user=await User.findOne({_id:TotalOrders[i].studentId})
+        OrderObject.bankDetail=bankDetail;
+        OrderObject.name=user.username
+        OrderObject.role=user.role
+        OrderObject.payable=TotalOrders[i].price-(TotalOrders[i].price*(5/100))
+        OrderObject.status='cancelled'
+        OrderObject.transfer=false
+
+      }
+      else{
+        let bankDetail=await TBankDetails.findOne({tutorId:TotalOrders[i].tutorId})
+        let user=await User.findOne({_id:TotalOrders[i].tutorId})
+        OrderObject.name=user.username
+        OrderObject.role=user.role
+        OrderObject.bankDetail=bankDetail;
+        OrderObject.payable=TotalOrders[i].price-(TotalOrders[i].price*(15/100))
+        OrderObject.status='complete'
+        OrderObject.transfer=false
+      }
+      OrderObject.orderId=TotalOrders[i]._id
+      finalArray.push(OrderObject)
+    }
+    res.json({error:false,finalArray})
+  }
+  catch(e){
+    res.json({error:true,message:"something went wrong."})
+  }
+})
+app.post('/markaspaid',async(req,res)=>{
+  const {orderId}=req.body;
+  try{
+  await Order.findByIdAndUpdate({_id:orderId},{transfer:true})
+  await DirectOrder.findByIdAndUpdate({_id:orderId},{transfer:true})
+  res.json({error:false,message:"success"})
+  }
+  catch(e){
+    res.json({error:true,message:"something went wrong."})
   }
 })
 app.get('/ordersinfo',async(req,res)=>{

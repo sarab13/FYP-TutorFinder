@@ -14,7 +14,11 @@ const orderSchema=new mongoose.Schema({
     },
     review:{
         type:reviewSchema,
-    default:null}
+    default:null},
+    transfer:{
+        type:Boolean,
+        default:false
+    }
 
 })
 
