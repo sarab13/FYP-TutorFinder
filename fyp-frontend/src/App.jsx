@@ -10,6 +10,7 @@ import CreatePost from "./components/CreatePost";
 import Post from './components/Post'
 import { StudentPosts } from './components/StudentPosts';
 import Role from './pages/Role';
+import AdminLoginPage from './components/Admin/adminLoginPage'
 import TeacherProfileForm from './components/TeacherProfileForm';
 import TeacherProfilePage from './components/TeacherProfilePage';
 import TeacherView from './components/TeacherView';
@@ -78,11 +79,11 @@ const App = () => {
   <Route exact path='/saccountdetails' element={<SBankDetailsForm/>}/>
 
   <Route exact path='/stdupdateprofile' element={<StudentProfileForm/>}/>
-  <Route  exact path='/admin' element={<AdminHomePage/>}/>
-  <Route  exact path='/sidebar' element={<Sidebar/>}/>
+  <Route  exact path='/admin' element={<AdminLoginPage/>}/>
+  
   <Route  exact path='/users' element={<Users/>}/>
-  <Route  exact path='/orders' element={<Orders/>}/>
-
+  <Route  exact path='/dashboard' element={<Orders/>}/>
+  
 
 
 

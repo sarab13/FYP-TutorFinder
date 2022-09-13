@@ -4,6 +4,7 @@ const stripe = require("stripe")("sk_test_51LPIPuIilE8N6gbW7KGpVCxYX3Q5plkce6ROC
 const uuid = require("uuid").v4;
 const mongoose=require('mongoose')
 const User=require('./models/User')
+const Admin=require('./models/Admin')
 const Profile=require('./models/TeacherProfile')
 const StudentProfile=require('./models/StudentProfile')
 const TBankDetails=require('./models/TeacherBankDetails')
@@ -470,6 +471,33 @@ catch(e){
   res.json({error:true,message:"something went wrong."})
 }
 })
+app.post('/registeradmin',async(req,res)=>{
+  const admin=req.body;
+  try{
+    const takenUsername=await User.findOne({username:admin.username})
+    const takenEmail=await User.findOne({email:admin.email})
+    if(takenUsername || takenEmail){
+        res.json({error:true,message:"Username or Email has already been taken."})
+        return
+    }
+     else{
+      const hashedPassword=await bcrypt.hash(admin.password,10);
+      const dbUser=new Admin({
+          username:admin.username.toLowerCase(),
+          email:admin.email.toLowerCase(),
+          password:hashedPassword,
+      
+      })
+      dbUser.save();
+  
+      res.json({error:false,message:"success",user:dbUser})
+    }
+  }
+  catch(e){
+    console.log(e)
+    res.json({error:true,message:"something went wrong."})
+  }
+})
 app.post('/register',async(req,res)=>{
     const user=req.body;
     console.log(user)
@@ -514,6 +542,30 @@ app.get('/myproposals',async(req,res)=>{
   }
   catch(e){
     res.json({error:true,message:"Something went wrong."})
+  }
+})
+app.post('/loginadmin',async(req,res)=>{
+  try{
+
+    const {username,password}=req.body;
+    const user=await Admin.findOne({username:username.toLowerCase()});
+    if(!user){
+        res.json({error:true, message:"Username or Password is incorrect"})
+    }
+  
+    else{
+        const correctPassword=await bcrypt.compare(password,user.password);
+        if(correctPassword){
+            res.json({message:"Login Successfully",user})
+        }
+        else{
+            res.json({error:true, message:"Username or Password is incorrect"})
+
+        }
+    }
+  }
+  catch(e){
+    res.json({error:true,message:"something went wrong."})
   }
 })
 app.post('/login',async(req,res)=>{
@@ -728,6 +780,7 @@ app.get('/pendingpayments',async(req,res)=>{
     res.json({error:true,message:"something went wrong."})
   }
 })
+
 app.post('/markaspaid',async(req,res)=>{
   const {orderId}=req.body;
   try{

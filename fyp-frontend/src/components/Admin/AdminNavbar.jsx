@@ -65,6 +65,7 @@ const AdminNavbar = () => {
         dispatch(logoutUser())
         navigate('/login')
     }
+    
     return (
         <Container>
         <Wrapper>
@@ -74,6 +75,8 @@ const AdminNavbar = () => {
 
 
        <Menu>
+       <MenuItem><Link to='/dashboard'>Home</Link></MenuItem>
+
         <MenuButton
         mx={19}
         fontSize={22}
@@ -93,10 +96,9 @@ const AdminNavbar = () => {
 
 
 
-            <MenuItem><Link to='/orders'>Orders</Link></MenuItem>
-            
+            <MenuItem><Link to='/admin' onClick={handleLogout}>Logout</Link></MenuItem>
 
-            <NotificationCenter className="myCustomClass" appId="6Z6EkKF28O" subscriberId={currentUser.user._id}/> 
+
                       
         </Menu1>
         
