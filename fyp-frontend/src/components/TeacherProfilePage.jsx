@@ -5,6 +5,7 @@ import { useSelector ,useDispatch} from "react-redux";
 import {useNavigate, Link,useLocation} from 'react-router-dom'
 import { logoutUser } from '../redux/actions/action';
 import TeacherNavBar from '../components/Teacher/TeacherNavBar'
+import StudentNavBar from '../components/Student/StudentNavbar'
 
 import { useEffect } from "react";
 import { useState } from "react";
@@ -179,7 +180,8 @@ const TeacherProfilePage = () => {
     }
     return (
         <div>
-<TeacherNavBar/>
+            {currentUser.user.role==="STUDENT"?<StudentNavBar/>:<TeacherNavBar/>}
+
         
         
         
