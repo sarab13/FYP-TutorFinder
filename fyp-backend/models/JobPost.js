@@ -14,7 +14,10 @@ const jobPostSchema=mongoose.Schema({
         type:Boolean,
         default:true
     },
+
      
+},{
+    timestamps:true
 })
 
 const JobPost=new mongoose.model('JobPosts',jobPostSchema)

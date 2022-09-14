@@ -145,7 +145,8 @@ const Desc=styled.h5`
 
 font-size: 15px;
 margin-top: 10px;
-
+max-height:83px;
+overflow:hidden;
 `
 const Row=styled.div`
 
@@ -231,7 +232,7 @@ const TeacherView = () => {
         <Desc> {job.description}</Desc>
 
         <Row>
-        <Text>  {moment(job.deadline).fromNow()}</Text>
+        <Text>  {moment(job.createdAt).fromNow()}</Text>
         {//<Text> <GoLocation/>  Lahore</Text>
         }
 

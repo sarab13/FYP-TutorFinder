@@ -340,10 +340,11 @@ try{
     qualification:req.body.qualification,
     experience:req.body.experience,
     fee:req.body.fee,
-    tutorId:req.body.tutorId
-
+    tutorId:req.body.tutorId,
+    subjects:[]
   })
-  await Profile.updateOne({_id:profile._id},{$push:{subjects:{$each:subjects}}})
+  await Profile.findOneAndUpdate({tutorId:req.body.tutorId},{$push:{subjects:{$each:subjects}}})
+  //await Profile.updateOne({_id:profile._id},{$push:{subjects:{$each:subjects}}})
 
   res.json({error:false,message:"success"})
 }
@@ -838,22 +839,19 @@ app.post('/latest_posts',async(req,res)=>{
     const tutorId=req.body.tutorId;
     const matchedPosts=[]
     const tutor=await Profile.findOne({tutorId})
-    const setA=tutor.subjects;
-    const allPosts=await JobPost.find()
-    for(let n=0;n<allPosts.length;n++){
-        let setB=allPosts[n].subjects
-        for (let i of setB) {
-            let k=0;
-            for(let j of setA){
-                if(i.name==j.name){
-                    matchedPosts.push(allPosts[n])
-                    k=1;
-                    break;
-                }
-            }
-            if(k===1)
-            break;
-        }
+    const tutorSubjects=tutor.subjects;
+    const allPosts=await JobPost.find().sort({_id:-1})
+    for(let i=0;i<allPosts.length;i++){
+        const postSubjects=allPosts[i].subjects;
+        var result = tutorSubjects.filter(function(o1){
+          // filter out (!) items in result2
+          return postSubjects.some(function(o2){
+              return o1.id === o2.id;          // assumes unique id
+          });
+      })
+      if(result.length>0){
+        matchedPosts.push(allPosts[i])
+      }
     }
     res.json({message:"success",jobs:matchedPosts});
 

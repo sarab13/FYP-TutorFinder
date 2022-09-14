@@ -123,7 +123,7 @@ const ViewPostContainer=styled.div`
 width: 100%;
 
 padding: 20px;
-  margin-left: 20px;
+
   
   margin-top: 20px;
 
@@ -172,7 +172,8 @@ const Desc=styled.h5`
 font-size: 15px;
 margin-top: 20px;
 margin-bottom: 20px;
-
+max-height:83px;
+overflow:hidden;
 
 `
 const Row=styled.div`
@@ -237,7 +238,7 @@ export const StudentPosts = () => {
  <Desc>{Post.description}</Desc>
 
  <Row>
- <Text>  {moment(Post.deadline).fromNow()}</Text>
+ <Text>  {moment(Post.createdAt).fromNow()}</Text>
  
  </Row>
  <Buttonset>

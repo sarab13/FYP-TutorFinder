@@ -236,7 +236,7 @@ else{
                   onRemove={onRemove} // Function will trigger on remove event
                   displayValue="name" // Property name to display in the dropdown options
                   />
-                <Lable>Deadline</Lable>
+                <Lable>Bidding Time (closing):</Lable>
                 <Input  onChange={handleDeadline} value={deadline} type="datetime-local"/>
                 <Error>{error}</Error>
                 {location.state!==null?
