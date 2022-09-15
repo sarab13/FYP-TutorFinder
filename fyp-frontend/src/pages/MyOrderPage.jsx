@@ -342,7 +342,7 @@ export default function MyOrderPage(){
     <TabPanel >
     {cancelledOrders.length>0 && cancelledOrders.map((order)=>(
 
-        <div className="OrderBox">
+        
 
         <div>
 <div>
@@ -355,9 +355,8 @@ export default function MyOrderPage(){
         </div>
         </div>
         
-        <button disabled>{order.orderStatus}</button>
 
-       </div> 
+       
     ))}
     {cancelledDirectOrders.length>0 && cancelledDirectOrders.map((order)=>(
         <div>

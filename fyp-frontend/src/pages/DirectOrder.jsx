@@ -6,6 +6,7 @@ import { useState } from 'react';
 import StripeCheckout from "react-stripe-checkout";
 import styled from "styled-components"
 import { title } from 'process';
+import StudentNavbar from "../components/Student/StudentNavbar";
 
 const Container = styled.div`
   
@@ -157,8 +158,9 @@ export default function OrderCreationForm() {
  
     return (
     <>
-    <Logo>Tutor Finder</Logo>
+    
     <div className='orderDetails'>
+    <StudentNavbar/>
     <Title>Order Details</Title>
     <Container>
     <Wrapper>
