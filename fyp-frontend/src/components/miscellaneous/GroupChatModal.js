@@ -34,7 +34,7 @@ import {
     const getSubscribers=async()=>{
      const result=await axios.get(`/getsubscribers?tutor_id=${currentUser.user._id}`)
      ///console.log(data)
-     //setSearchResult(result.data.data)
+    // setSearchResult(result.data.data)
      setAllUsers(result.data.data)
      console.log(result.data.data)
     setLoading(false)

@@ -180,7 +180,7 @@ const TeacherProfileForm = () => {
    
   }
   const handleSubmit=(e)=>{
-    alert(profile.img)
+  
     e.preventDefault()
     if(!profile.name || !profile.qualification || !profile.description || !profile.img || !profile.gender || !profile.dob  || !profile.location){
       SetError('Please fill all the fields.');

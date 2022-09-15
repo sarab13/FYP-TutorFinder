@@ -92,7 +92,7 @@ export default function SignIn() {
   const result=await axios.post('http://localhost:5000/login',body);
   if(result.data.error){
     setError(result.data.message)
-    alert(error)
+    return
   }
   else{
     setError('')

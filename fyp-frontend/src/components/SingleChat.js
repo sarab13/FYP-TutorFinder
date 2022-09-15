@@ -95,7 +95,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     if (event.key === "Enter" && newMessage) {
       socket.emit("stop typing", selectedChat._id);
       try {   
-        console.log(user)
+        
         
         setNewMessage("");
         const { data } = await axios.post(
@@ -134,7 +134,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     socket.on("typing", () => setIsTyping(true));
     socket.on("stop typing", () => setIsTyping(false));
     return ()=>{
-    //  getSubscribers()
+      //getSubscribers()
       socket.off("connected")
       socket.off("typing")
       socket.off("stop typing")

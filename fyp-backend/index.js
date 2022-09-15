@@ -639,7 +639,7 @@ app.post('/login',async(req,res)=>{
                userDetail.profile_pic=profile.profile_pic
             }
             res.cookie('token',token)
-            res.json({message:"Login Successfully",user:userDetail})
+            res.json({error:false,message:"Login Successfully",user:userDetail})
         }
         else{
             res.json({error:true, message:"Username or Password is incorrect"})

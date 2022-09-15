@@ -20,7 +20,7 @@ import { LOGOUT, SIGNIN } from '../actionTypes/types';
                };
             case LOGOUT:
               return {
-                  isLoggedIn:false,user:{}
+                  ...state,isLoggedIn:false,user:{}
               }
             case 'SETDP':
               return{

@@ -104,6 +104,7 @@ const Post = () => {
       setTitle(job.title)
       setDescription(job.description)
       setBudget(job.budget)
+      
   }
   useEffect(()=>{
     if(location.state!==null){
@@ -227,7 +228,7 @@ else{
                 <Lable>Description</Lable>
                 <TextArea value={description} onChange={handleDescription}/>
                 <Lable>Budget In USD:</Lable>
-                <Input type="number" value={budget} onChange={handleBudget}/>
+                <Input min={0} type="number" value={budget} onChange={handleBudget}/>
                 <Lable>Subjects</Lable>
                 <Multiselect
                 

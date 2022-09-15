@@ -62,6 +62,7 @@ const MyProposals = () => {
         <div>
         <TeacherNavBar/>
         <BottomContainer>
+        <h1>{!proposalsList.length>0?'You have not submitted any Proposal Yet.':'My Proposals'}</h1>
             {proposalsList.length>0 && proposalsList.map((proposal)=>(
                 <ViewPostContainer to={`/findjobs/${proposal.jobId}`}>
             <Text><Span> Job Title:</Span> {proposal.jobTitle}</Text>
