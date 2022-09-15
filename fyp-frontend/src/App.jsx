@@ -3,6 +3,7 @@ import React,{useState} from 'react'
 import './App.css'
 import Register from "./pages/Register";
 import AcademyPaymentForm from './pages/AcademyPaymentForm';
+import TMyOrderPage from './pages/TMyOrderPage'
 import Login from "./pages/Login.jsx";
 import MyOrderPage from './pages/MyOrderPage'
 import {Routes,Route,Navigate} from 'react-router-dom'
@@ -36,6 +37,7 @@ import Sidebar from './components/Admin/sidebar/Sidebar';
 import AdminHomePage from './pages/AdminHomePage';
 import Users from './components/Admin/Users';
 import Orders from './components/Admin/Orders/Orders'
+import ChangePasswordForm from './components/Student/ChangePasswordForm'
 const App = () => {
   const currentUser=useSelector((state)=>state.currentUser)
   const [selectedChat, setSelectedChat] = useState();
@@ -68,6 +70,7 @@ const App = () => {
   <Route exact path='/createorder' element={<OrderCreationForm/>}/>
   <Route exact path='/manageorders' element={<MyOrders/>}/>
   <Route exact path='/test' element={<MyOrderPage/>}/>
+  <Route exact path='/tmyorders' element={<TMyOrderPage/>}/>
   <Route exact path='/searchtutors' element={<SearchTutors/>} />
   <Route exact path='/tutorprofile' element={<TeacherProfilePage/>}/>
   <Route exact path='/directorder' element={<DirectOrder/>}/>
@@ -83,6 +86,8 @@ const App = () => {
   
   <Route  exact path='/users' element={<Users/>}/>
   <Route  exact path='/dashboard' element={<Orders/>}/>
+  <Route  exact path='/changepassword' element={<ChangePasswordForm/>}/>
+
   
 
 

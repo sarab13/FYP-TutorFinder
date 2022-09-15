@@ -15,8 +15,8 @@ const ENDPOINT = "http://localhost:5000"; // "https://talk-a-tive.herokuapp.com"
 var socket;
 const MyChats = ({ fetchAgain }) => {
 const currentUser=useSelector((state)=>state.currentUser)
- const { selectedChat, setSelectedChat, user, chats, setChats } = React.useContext(ChatContext);
- const [loggedUser, setLoggedUser] = useState(user);
+ const { selectedChat, setSelectedChat,  chats, setChats } = React.useContext(ChatContext);
+ 
 
  /*const setSelectedChat=ChatState.setSelectedChat;
  const notification=ChatState.notification;
@@ -35,9 +35,9 @@ const currentUser=useSelector((state)=>state.currentUser)
   const fetchChats = async () => {
     // console.log(user._id);
     try {
-      const {data}= await axios.post("/api/chat/allchats",{userId:user._id}); 
+      const {data}= await axios.post("/api/chat/allchats",{userId:currentUser.user._id}); 
       setChats([...data]);
-      console.log(chats)
+      console.log(data)
 
     } catch (error) {
       console.log(error)
@@ -138,7 +138,7 @@ const currentUser=useSelector((state)=>state.currentUser)
                 key={chat._id}
               >
                 
-                <Text>{!chat.isGroupChat? getSender(user, chat.users)
+                <Text>{!chat.isGroupChat? getSender(currentUser.user, chat.users)
                     : chat.chatName}
                 </Text>
                 {chat.latestMessage && (

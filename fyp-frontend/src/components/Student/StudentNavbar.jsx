@@ -134,6 +134,12 @@ const StudentNavbar = () => {
               <MenuDivider />
               <MenuItem><Link to='/saccountdetails' >Bank Details</Link></MenuItem>
               <MenuDivider />
+              <MenuItem><Link to='/changepassword' >Change Password</Link></MenuItem>
+              <MenuDivider />
+
+
+
+
 
               <MenuItem><Link to='/login' onClick={handleLogout}>Logout</Link></MenuItem>
             </MenuList>

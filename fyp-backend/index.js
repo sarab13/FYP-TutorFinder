@@ -569,6 +569,41 @@ app.post('/loginadmin',async(req,res)=>{
     res.json({error:true,message:"something went wrong."})
   }
 })
+app.post('/changepassword',async(req,res)=>{
+ // const {user}=req.body;
+  const {username,password,role,newpassword}=req.body
+  console.log(password)
+  try{
+    let user=await User.findOne({username:username.toLowerCase()});
+    if(!user){
+      res.json({error:true, message:"Username or Password is incorrect"})
+  }
+  else if(role!==user.role){
+      res.json({error:true, message:"Username or Password is incorrect"})
+
+  }
+  else{
+      const correctPassword=await bcrypt.compare(password,user.password);
+      if(correctPassword){
+        if(!user.accountStatus){
+          res.json({error:true,message:"Your account is temporarily block"})
+          return
+        }
+        const hashedPassword=await bcrypt.hash(newpassword,10);
+        
+          await User.findOneAndUpdate({_id:user._id},{password:hashedPassword})     
+          res.json({error:false,message:"Password Changed Successfully"})
+      }
+      else{
+          res.json({error:true, message:"Username or Password is incorrect"})
+
+      }
+  }
+  }
+  catch(e){
+    res.json({error:true,message:"Something went wrong."})
+  }
+})
 app.post('/login',async(req,res)=>{
     const {username,password,role}=req.body;
     const user=await User.findOne({username:username.toLowerCase()});
@@ -587,8 +622,24 @@ app.post('/login',async(req,res)=>{
             return
           }
             const token=jwt.sign({_id:user._id},'mysecretstring')
+            let userDetail={
+              _id:user._id,username:user.username,
+            password:user.password,
+          role:user.role,
+        email:user.email,
+      profile_pic:''}
+            if(user.role==="STUDENT"){
+              const profile=await StudentProfile.findOne({studentId:user._id})
+              if(profile) 
+              userDetail.profile_pic=profile.profile_pic
+            }
+            else{
+              const profile=await Profile.findOne({tutorId:user._id})
+              if(profile)
+               userDetail.profile_pic=profile.profile_pic
+            }
             res.cookie('token',token)
-            res.json({message:"Login Successfully",user})
+            res.json({message:"Login Successfully",user:userDetail})
         }
         else{
             res.json({error:true, message:"Username or Password is incorrect"})
@@ -676,6 +727,7 @@ app.post('/completeprofile',async(req,res)=>{
 
     }
 })
+
 app.post('/myposts/:id',async(req,res)=>{
     const userId=req.params.id;
     console.log(userId)
@@ -990,6 +1042,29 @@ app.post('/proposalslist',async(req,res)=>{
 
     }
 })
+app.get('/tmydirectorders',async(req,res)=>{
+  const {userId}=req.query;
+  try{
+  const orders=await DirectOrder.find({tutorId:userId});
+  let listOfOrders=[];
+  for(let i=0;i<orders.length;i++){
+    let orderDetail={}
+    orderDetail._id=orders[i]._id
+    const student=await User.findOne({_id:orders[i].studentId})
+    orderDetail.studentId=student._id;
+    orderDetail.studentName=student.username;
+    orderDetail.orderPrice=orders[i].price;
+    orderDetail.orderStatus=orders[i].status;
+    listOfOrders.push(orderDetail);
+  }
+   res.json({message:"success",listOfOrders})
+  }
+  catch(e){
+    console.log(e)
+    res.json({message:"failure"})
+  }
+
+})
 app.get('/mydirectorders',async(req,res)=>{
   const {userId}=req.query;
   try{
@@ -1001,6 +1076,33 @@ app.get('/mydirectorders',async(req,res)=>{
     const tutor=await User.findOne({_id:orders[i].tutorId})
     orderDetail.tutorId=tutor._id;
     orderDetail.tutorName=tutor.username;
+    orderDetail.orderPrice=orders[i].price;
+    orderDetail.orderStatus=orders[i].status;
+    listOfOrders.push(orderDetail);
+  }
+   res.json({message:"success",listOfOrders})
+  }
+  catch(e){
+    console.log(e)
+    res.json({message:"failure"})
+  }
+
+})
+app.get('/tmyorders',async(req,res)=>{
+  const {userId}=req.query;
+  try{
+  const orders=await Order.find({tutorId:userId});
+  let listOfOrders=[];
+  for(let i=0;i<orders.length;i++){
+    let orderDetail={}
+    orderDetail._id=orders[i]._id
+    orderDetail.review=orders[i].review;
+    const student=await User.findOne({_id:orders[i].studentId})
+    orderDetail.studentId=student._id;
+    orderDetail.studentName=student.username;
+    const job=await JobPost.findOne({_id:orders[i].jobId})
+    orderDetail.jobId=job._id;
+    orderDetail.jobTitle=job.title;
     orderDetail.orderPrice=orders[i].price;
     orderDetail.orderStatus=orders[i].status;
     listOfOrders.push(orderDetail);

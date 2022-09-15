@@ -3,6 +3,7 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
+import {useSelector} from 'react-redux'
 import FormControlLabel from '@mui/material/FormControlLabel';
 import { FormHelperText } from '@mui/material';
 import Radio from '@mui/material/Radio';
@@ -22,7 +23,7 @@ import axios from 'axios'
 import { useState } from "react";
 import {useDispatch} from 'react-redux'
 import { useNavigate } from 'react-router-dom';
-import { signIn } from '../redux/actions/action';
+import { signIn ,setDP} from '../redux/actions/action';
 import { Link } from 'react-router-dom';
 function Copyright(props) {
   return (
@@ -40,6 +41,8 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignIn() {
+  const currentUser=useSelector((state)=>state.currentUser)
+
   const dispatch=useDispatch()
   const navigate=useNavigate()
   const [username,setUsername]=useState('')
@@ -69,19 +72,19 @@ export default function SignIn() {
       setError("Please Enter username and passwords")
       return
     }
-    //if(username.length<6){
-      //setError('Username must be at least 6 characters long.')
-      //return
-    //}
+    if(username.length<6){
+      setError('Username must be at least 6 characters long.')
+      return
+    }
     if(!((username[0]>='a' && username[0]<='z' )||(username[0]>='A' && username[0]<='Z' ) )) {
       setError('Username must start with alphabets.')
       return
     }
     
-    //if(password.length<6){
-      //setError("Password must be at least 6 characters long.")
-      //return
-   // }
+    if(password.length<6){
+      setError("Password must be at least 6 characters long.")
+      return
+   }
     
     const body={username,password,role}
     
@@ -93,7 +96,10 @@ export default function SignIn() {
   }
   else{
     setError('')
+    //currentUser.user.profile_pic=result.data.user.profile_pic;
+    //dispatch(setDP(currentUser.user))
     dispatch(signIn(result.data.user))
+
     navigate('/')
   }
   }

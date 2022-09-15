@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { useState } from 'react';
 import StripeCheckout from "react-stripe-checkout";
 import styled from "styled-components"
+import StudentNavbar from '../components/Student/StudentNavbar';
 
 const Container = styled.div`
   
@@ -155,7 +156,7 @@ console.log(body)
  
     return (
     <>
-    <Logo>Tutor Finder</Logo>
+    <StudentNavbar/>
     <div className='orderDetails'>
     <Title>Monthly Subscription For Academy</Title>
     <Title>Order Details</Title>

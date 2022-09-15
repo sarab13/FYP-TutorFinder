@@ -102,7 +102,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
           "/api/message",
           {
             content: newMessage,
-            sender:user,
+            sender:currentUser.user._id,
             chatId: selectedChat,
           },
           
@@ -208,11 +208,11 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             {messages &&
               (!selectedChat.isGroupChat ? (
                 <>
-                  {getSender(user, selectedChat.users)}
+                  {getSender(currentUser.user, selectedChat.users)}
                   {currentUser.user.role=="STUDENT"?(isPaid?'Your are subcriber of Academy.':
                   <Link to='/subscribe' state={[selectedChat]}>Pay for Academy</Link>):''}
                   <ProfileModal
-                    user={getSenderFull(user, selectedChat.users)}
+                    user={getSenderFull(currentUser.user, selectedChat.users)}
                   />
                 </>
               ) : (

@@ -232,13 +232,15 @@ export default function MyPost() {
     const getJob=async()=>{
         const body={id}
         const result=await axios.post('/getjob',body)
+  
         setPost({...post,
         _id:id,
         title:result.data.job.title,
         subjects:result.data.job.subjects,
         description:result.data.job.description,
         deadline:result.data.job.deadline,
-        budget:result.data.job.budget
+        budget:result.data.job.budget,
+        createdAt:result.data.job.createdAt
         })
         }
     useEffect(()=>{
@@ -280,8 +282,10 @@ export default function MyPost() {
         <ViewPostContainer>
         
         <Row>
-        <Tags>Physics</Tags>
-        <Tags>Applied physics</Tags>
+        {post.subjects.map((subject)=>(
+          <Tags>{subject.name}</Tags>
+        ))}
+        
 
         </Row>
         <Row>
@@ -293,7 +297,7 @@ export default function MyPost() {
 
         </Row>
         <Row>
-        <MdPostAdd/> <Text>  <span className="text">Posted:</span>{moment(post.deadline).fromNow()}</Text>
+        <MdPostAdd/> <Text>  <span className="text">Posted:</span>{moment(post.createdAt).fromNow()}</Text>
         
 
 

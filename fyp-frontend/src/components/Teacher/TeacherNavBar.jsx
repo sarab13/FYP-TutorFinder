@@ -112,7 +112,7 @@ const TeacherNavbar = () => {
 
 
 
-            <MenuItem><Link to='/test'>Manage Orders</Link></MenuItem>
+            <MenuItem><Link to='/tmyorders'>Manage Orders</Link></MenuItem>
             <MenuItem><Link to='/chat'>Messages</Link></MenuItem>
             <MenuItem><Link to='/treviews'>Reviews</Link></MenuItem>
 
@@ -157,6 +157,10 @@ const TeacherNavbar = () => {
               <MenuItem><Link to='/taccountdetails' > Bank Details </Link></MenuItem>
 
               <MenuDivider />
+              <MenuItem><Link to='/changepassword' > Change Password </Link></MenuItem>
+              <MenuDivider />
+
+
 
               <MenuItem><Link to='/login' onClick={handleLogout}>Logout</Link></MenuItem>
             </MenuList>

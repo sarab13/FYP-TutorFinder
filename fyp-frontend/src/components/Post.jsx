@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { useNavigate,useLocation } from "react-router-dom";
 import styled from "styled-components"
 import StudentNavbar from "../components/Student/StudentNavbar"
+import {Options} from './list'
 const Logo=styled.h1`
 font-weight: bold;
 text-decoration: underline crimson;
@@ -93,7 +94,7 @@ const Post = () => {
   const [budget,setBudget]=useState(0)
   const [deadline,setDeadline]=useState(null)
   const [subjects,setSubjects]=useState([])
-  const [Options,setOptions]=useState([{name: 'Physics', id: 1},{name: 'Computer', id: 2}])
+  //const [Options,setOptions]=useState([{name: 'Physics', id: 1},{name: 'Computer', id: 2}])
   
 
   const getJob=async()=>{

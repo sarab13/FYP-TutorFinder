@@ -24,6 +24,8 @@ padding: 4px;
 border-radius: 5px;
 
 `
+
+  
 function Orders() {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [pendingPayments,setPendingPayments]=useState([])
@@ -71,6 +73,7 @@ function Orders() {
     const result=await axios.get('/pendingpayments')
     if(!result.data.error){
       setPendingPayments(result.data.finalArray)
+      console.log(result.data.finalArray)
     }
   }
 useEffect(()=>{
@@ -121,8 +124,8 @@ if(!result.data.error){
     </div>
     <div className='featured2'>
     
-    {pendingPayments.length<1?'No Pending Payments':pendingPayments.map((detail)=>(
-      <div className='featuredItem'>
+    {pendingPayments.length<1?'No Pending Payments':pendingPayments.map((detail,index)=>(
+      <div className='featuredItem' key={index}>
       <div>
         <h2>{detail.name}</h2>
         <h2>{detail.role}</h2>
@@ -130,9 +133,7 @@ if(!result.data.error){
         <h2>{detail.payable}{detail.status==='complete'?' (-15%)':' (-5%)'}</h2>
         <button className='btn' onClick={onOpen} >Account Details</button>
         
-        <button className='btn' onClick={()=>handlePaid(detail.orderId)}>Mark as Paid</button>
-      </div>
-      <Modal isOpen={isOpen} onClose={onClose}>
+       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Bank Details</ModalHeader>
@@ -154,6 +155,10 @@ if(!result.data.error){
          
         </ModalContent>
       </Modal>
+      
+        <button className='btn' onClick={()=>handlePaid(detail.orderId)}>Mark as Paid</button>
+      </div>
+      
     </div>
     
     ))}

@@ -14,7 +14,7 @@ import { isPossiblePhoneNumber } from 'react-phone-number-input'
 import TeacherNavBar from './Teacher/TeacherNavBar'
 import SpecialNavBar from './Teacher/SpecialNavBar'
 import countryList from 'react-select-country-list'
-
+import {Options} from './list'
 const Logo=styled.h1`
 font-weight: bold;
 text-decoration: underline crimson;
@@ -115,7 +115,7 @@ const TeacherProfileForm = () => {
   const [Error,SetError]=useState("")
   const [qualificationDropDown,setQualirficationDropDown]=useState()
   const [locationDropDown,setLocationDropDown]=useState()
-  const [Options,setOptions]=useState([{name: 'Physics', id: 1},{name: 'Computer', id: 2}])
+  //const [Options,setOptions]=useState([{name: 'Physics', id: 1},{name: 'Computer', id: 2}])
   const getProfileInfo=async()=>{
     const result=await axios.post('/myprofile',{tutorId:currentUser.user._id})
     if(!result.data.error){

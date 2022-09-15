@@ -215,11 +215,11 @@ const TeacherView = () => {
        <TeacherNavBar/>
         <BottomContainer>
         <Text>Online Tutor Jobs</Text>
-        <SearchContainer>
+        {/*<SearchContainer>
         <Input type="search" placeholder="Subject/Skill"/>
         <Button>Search</Button>
 
-        </SearchContainer>
+        </SearchContainer>*/}
         
         {jobs.map((job)=>(
           <LinkTag to={`/findjobs/${job._id}`}>
