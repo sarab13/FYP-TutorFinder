@@ -107,10 +107,10 @@ export default function OrderCreationForm() {
       // setError("Please set End Time for Order.");
       //  return
     //}
-  //  if(!isPayment){
-    //    setError("Please make payment first.");
-      //  return
-    //}
+    if(!isPayment){
+        setError("Please make payment first.");
+        return
+    }
     let timeElapsed=Date.now('yy-mm-dd hh-mm-ss')
   let timestamp=new Date(timeElapsed);
   setStartTime(timestamp);
@@ -187,10 +187,10 @@ export default function OrderCreationForm() {
         {isPayment?<button>Paid Successfully</button>:
           <StripeCheckout
             className="center"
-            stripeKey="pk_live_51LPIPuIilE8N6gbW1bS7BwNbPR6TC0o4TVeD5GD6WZkQZL1ydnkl6DAGpoxk8NoZywuTvolwoGVAqQhYPO1nPDKB00Vqz3UCWM"
+            stripeKey=""
             token={handleToken}
-            amount={0.1*100}//{product.price * 100}
-            name="Sample Book"
+            amount={product.price * 100}
+            name="Pay Now"
             email={currentUser.user.email}
             //billingAddress
             //shippingAddress

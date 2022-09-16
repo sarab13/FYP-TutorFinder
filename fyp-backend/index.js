@@ -1,6 +1,6 @@
 require('./dbConnection')
 const express=require('express')
-const stripe = require("stripe")("sk_test_51LPIPuIilE8N6gbW7KGpVCxYX3Q5plkce6ROCTZN6PBMCJ0NBQZG9sWNYVICEXY7n1skVh3YFRl9FTDHM0G4rE2Z001Pro6H2X");
+const stripe = require("stripe")("");
 const uuid = require("uuid").v4;
 const mongoose=require('mongoose')
 const User=require('./models/User')

@@ -102,10 +102,10 @@ export default function OrderCreationForm() {
    
   const handleSubmit=async(e)=>{
     e.preventDefault();
-    if(endTime.length<1){
-        setError("Please set End Time for Order.");
-        return
-    }
+   // if(endTime.length<1){
+     //   setError("Please set End Time for Order.");
+       // return
+    //}
     if(!isPayment){
         setError("Please make payment first.");
         return
@@ -181,9 +181,9 @@ console.log(body)
         {isPayment?<button>Paid Successfully</button>:
           <StripeCheckout
             className="center"
-            stripeKey="pk_test_51LPIPuIilE8N6gbW5nT5MVVlRmTOkAz2TzCorb8n6g7ejf0U74H7FJKxZ9xirGc0N0KprjzBv29NvSmhK4pEStXu00B5v7NqRb"
+            stripeKey=""
             token={handleToken}
-            amount={0.1*100}//{product.price * 100}
+            amount={product.price * 100}
             name="Sample Book"
             email={currentUser.user.email}
             //billingAddress
